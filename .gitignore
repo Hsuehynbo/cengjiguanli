@@ -1,0 +1,41 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Java build artifacts
+backend/target/
+backend/logs/
+backend/uploads/
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/dist/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code / AI tools
+.claude/
+.vibe-cache/
+.vibe-state.json
+graphify-out/
+predictions/
+retros/
+tasks/
+outputs/
+out/
+agent-harness/
+
+# Temp files
+*.log
+*.tmp
+java_files.txt
+merry chrismers.html
+package-lock.json
+
+# Sensitive
+mysql/
+软著材料/
