@@ -42,6 +42,10 @@
   background: rgba(0, 212, 255, 0.5);
 }
 
+html {
+  zoom: 0.9;
+}
+
 body {
   background-color: var(--bg-primary);
   color: var(--text-secondary);
