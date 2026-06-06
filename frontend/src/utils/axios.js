@@ -53,3 +53,11 @@ instance.interceptors.response.use(
 )
 
 export default instance
+
+const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://cengjiguanli-production.up.railway.app'
+
+export function getFileUrl(path) {
+  if (!path) return ''
+  if (path.startsWith('http://') || path.startsWith('https://')) return path
+  return API_BASE + path
+}

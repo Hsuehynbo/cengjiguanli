@@ -160,7 +160,7 @@
             <div class="pre-content">{{ selectedRecord.content }}</div>
           </a-descriptions-item>
           <a-descriptions-item label="现场照片" v-if="selectedRecord.photo">
-            <img :src="selectedRecord.photo" style="max-width: 100%; border-radius: 4px;" alt="现场照片" />
+            <img :src="getFileUrl(selectedRecord.photo)" style="max-width: 100%; border-radius: 4px;" alt="现场照片" />
           </a-descriptions-item>
         </a-descriptions>
       </div>
@@ -263,6 +263,7 @@ import axios from '../utils/axios';
 import { message } from 'ant-design-vue';
 import dayjs from 'dayjs';
 import { getCurrentUser } from '../utils/auth';
+import { getFileUrl } from '../utils/axios';
 import { RISK_LEVEL_MAP, TALK_TYPE_OPTIONS, hasSubordinates as hasSubordinatesFn, isBureauLeader as isBureauLeaderFn } from '../utils/constants';
 
 const currentUser = getCurrentUser();

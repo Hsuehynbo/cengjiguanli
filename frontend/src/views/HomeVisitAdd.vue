@@ -86,7 +86,7 @@
 import { ref, onMounted, reactive, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { LeftOutlined, PlusOutlined } from '@ant-design/icons-vue';
-import axios from '../utils/axios';
+import axios, { getFileUrl } from '../utils/axios';
 import { message } from 'ant-design-vue';
 import dayjs from 'dayjs';
 import { getCurrentUser } from '../utils/auth';
@@ -143,7 +143,7 @@ const initInfo = async () => {
           uid: '-1',
           name: 'photo',
           status: 'done',
-          url: res.photo.startsWith('http') ? res.photo : res.photo
+          url: getFileUrl(res.photo)
         }];
       }
     } else {

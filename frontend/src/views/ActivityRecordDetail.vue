@@ -58,7 +58,7 @@ import { ref, computed, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import dayjs from 'dayjs';
-import axios from '../utils/axios';
+import axios, { getFileUrl } from '../utils/axios';
 
 const route = useRoute();
 const router = useRouter();
@@ -69,7 +69,7 @@ const previewPhoto = ref(null);
 
 const photoList = computed(() => {
   if (!record.value?.photos) return [];
-  return record.value.photos.split(',').filter(p => p.trim());
+  return record.value.photos.split(',').filter(p => p.trim()).map(p => getFileUrl(p));
 });
 
 const formatTime = (t) => t ? dayjs(t).format('YYYY-MM-DD HH:mm') : '-';

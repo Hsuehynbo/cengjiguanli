@@ -27,7 +27,7 @@
         <a-form-item label="活动照片">
           <div class="photo-upload-area">
             <div v-for="(photo, index) in photoList" :key="index" class="photo-item">
-              <img :src="photo" alt="照片" />
+              <img :src="getFileUrl(photo)" alt="照片" />
               <div class="photo-remove" @click="removePhoto(index)">
                 <DeleteOutlined />
               </div>
@@ -80,7 +80,7 @@ import { ref, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import { PlusOutlined, DeleteOutlined } from '@ant-design/icons-vue';
-import axios from '../utils/axios';
+import axios, { getFileUrl } from '../utils/axios';
 
 const route = useRoute();
 const router = useRouter();

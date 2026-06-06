@@ -94,6 +94,7 @@ import { LeftOutlined } from '@ant-design/icons-vue';
 import axios from '../utils/axios';
 import { message } from 'ant-design-vue';
 import { getCurrentUser } from '../utils/auth';
+import { getFileUrl } from '../utils/axios';
 import { TALK_TYPE_OPTIONS, isBureauLeader as isBureauLeaderFn } from '../utils/constants';
 
 const currentUser = getCurrentUser();
@@ -168,7 +169,7 @@ const handleSave = async () => {
 
 const getPhotoUrl = (photo) => {
   if (!photo) return '';
-  return photo;
+  return getFileUrl(photo);
 };
 
 onMounted(() => {
