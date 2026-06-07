@@ -17,8 +17,23 @@
               </a-form-item>
             </a-col>
             <a-col :span="12">
-              <a-form-item label="被家访人" name="targetName">
-                <a-input v-model:value="form.targetName" disabled />
+              <a-form-item label="被家访人" name="targetName" :rules="[{ required: true, message: '请选择被家访人' }]">
+                <a-select
+                  v-if="!hasTargetFromRoute"
+                  v-model:value="form.targetJobNo"
+                  show-search
+                  placeholder="输入姓名搜索被家访人"
+                  :filter-option="false"
+                  :loading="searchLoading"
+                  @search="handleSearchUsers"
+                  @change="handleTargetChange"
+                  :not-found-content="searchLoading ? '搜索中...' : '未找到匹配人员'"
+                >
+                  <a-select-option v-for="u in searchResults" :key="u.jobNo" :value="u.jobNo">
+                    {{ u.name }} ({{ u.jobNo }}) {{ u.deptName ? '- ' + u.deptName : '' }}
+                  </a-select-option>
+                </a-select>
+                <a-input v-else v-model:value="form.targetName" disabled />
               </a-form-item>
             </a-col>
           </a-row>
@@ -116,6 +131,39 @@ const previewVisible = ref(false);
 const previewImage = ref('');
 const previewTitle = ref('');
 
+// 人员搜索相关
+const hasTargetFromRoute = ref(false);
+const searchResults = ref([]);
+const searchLoading = ref(false);
+let searchTimer = null;
+
+const handleSearchUsers = (keyword) => {
+  if (searchTimer) clearTimeout(searchTimer);
+  if (!keyword || keyword.trim().length < 1) {
+    searchResults.value = [];
+    return;
+  }
+  searchLoading.value = true;
+  searchTimer = setTimeout(async () => {
+    try {
+      const res = await axios.get(`/api/organization/search?keyword=${encodeURIComponent(keyword.trim())}`);
+      searchResults.value = (res || []).slice(0, 20);
+    } catch (e) {
+      searchResults.value = [];
+    } finally {
+      searchLoading.value = false;
+    }
+  }, 300);
+};
+
+const handleTargetChange = (jobNo) => {
+  const selected = searchResults.value.find(u => u.jobNo === jobNo);
+  if (selected) {
+    form.targetName = selected.name;
+    form.targetJobNo = selected.jobNo;
+  }
+};
+
 const rules = {
   visitTime: [{ required: true, message: '请选择家访时间', trigger: 'change' }],
   visitType: [{ required: true, message: '请选择家访类型', trigger: 'change' }],
@@ -155,6 +203,7 @@ const initInfo = async () => {
 
       const targetJobNo = route.query.targetJobNo;
       if (targetJobNo) {
+        hasTargetFromRoute.value = true;
         const res = await axios.get(`/api/organization/user/${targetJobNo}`);
         form.targetName = res.name;
         form.targetJobNo = res.jobNo;
@@ -204,6 +253,10 @@ const handleSubmit = async () => {
     await formRef.value.validate();
     if (!form.operatorJobNo) {
       message.error('未获取到当前登录人信息，请重新登录');
+      return;
+    }
+    if (!form.targetJobNo) {
+      message.error('请选择被家访人');
       return;
     }
     submitting.value = true;
