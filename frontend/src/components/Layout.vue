@@ -7,50 +7,50 @@
 
       <div class="menu">
         <div v-if="canViewUnitDashboard" class="menu-item" :class="{ active: isOrgStatsActive }" @click="goToUnitDashboard" :title="collapsed ? '部门详情' : ''">
-          <BarChartOutlined class="menu-icon" />
+          <Icon icon="ri:bar-chart-2-fill" class="menu-icon" width="18" height="18" />
           <span class="menu-text">部门详情</span>
         </div>
         <div v-if="canViewGlobalDashboard" class="menu-item" :class="{ active: selectedKey === '/global-dashboard' }" @click="goToRoute('/global-dashboard')" :title="collapsed ? '全局总览' : ''">
-          <DashboardOutlined class="menu-icon" />
+          <Icon icon="ri:dashboard-3-fill" class="menu-icon" width="18" height="18" />
           <span class="menu-text">全局总览</span>
         </div>
         <div v-if="hasSubordinates" class="menu-item" :class="{ active: selectedKey === '/' }" @click="goToRoute('/')" :title="collapsed ? '组织架构图' : ''">
-          <UsergroupAddOutlined class="menu-icon" />
+          <Icon icon="ri:group-fill" class="menu-icon" width="18" height="18" />
           <span class="menu-text">组织架构图</span>
         </div>
         <div v-if="hasSubordinates" class="menu-item" :class="{ active: selectedKey === '/organization-list' }" @click="goToRoute('/organization-list')" :title="collapsed ? '组织架构列表' : ''">
-          <UnorderedListOutlined class="menu-icon" />
+          <Icon icon="ri:list-check-2" class="menu-icon" width="18" height="18" />
           <span class="menu-text">组织架构列表</span>
         </div>
         <div class="menu-item" :class="{ active: selectedKey === '/talk' }" @click="goToRoute('/talk')" :title="collapsed ? '谈话记录' : ''">
-          <MessageOutlined class="menu-icon" />
+          <Icon icon="ri:chat-3-fill" class="menu-icon" width="18" height="18" />
           <span class="menu-text">谈话记录</span>
         </div>
         <div class="menu-item" :class="{ active: selectedKey === '/home-visit-list' }" @click="goToRoute('/home-visit-list')" :title="collapsed ? '家访记录' : ''">
-          <HomeOutlined class="menu-icon" />
+          <Icon icon="ri:home-heart-fill" class="menu-icon" width="18" height="18" />
           <span class="menu-text">家访记录</span>
         </div>
         <div v-if="canViewActivityTasks" class="menu-item" :class="{ active: selectedKey === '/activity-tasks' }" @click="goToRoute('/activity-tasks')" :title="collapsed ? '活动任务' : ''">
-          <ScheduleOutlined class="menu-icon" />
+          <Icon icon="ri:calendar-schedule-fill" class="menu-icon" width="18" height="18" />
           <span class="menu-text">活动任务</span>
         </div>
         <div class="menu-item" :class="{ active: selectedKey === '/profile' }" @click="goToRoute('/profile')" :title="collapsed ? '个人信息' : ''">
-          <UserOutlined class="menu-icon" />
+          <Icon icon="ri:user-3-fill" class="menu-icon" width="18" height="18" />
           <span class="menu-text">个人信息</span>
         </div>
         <div v-if="canManagePersonnel" class="menu-item" :class="{ active: selectedKey === '/admin-mgmt' }" @click="goToRoute('/admin-mgmt')" :title="collapsed ? '人事调动与管控' : ''">
-          <SettingOutlined class="menu-icon" />
+          <Icon icon="ri:settings-3-fill" class="menu-icon" width="18" height="18" />
           <span class="menu-text">人事调动与管控</span>
         </div>
       </div>
       <div class="sidebar-toggle" @click="collapsed = !collapsed">
-        <MenuFoldOutlined v-if="!collapsed" />
-        <MenuUnfoldOutlined v-else />
+        <Icon icon="ri:menu-fold-fill" v-if="!collapsed" width="16" height="16" />
+        <Icon icon="ri:menu-unfold-fill" v-else width="16" height="16" />
         <span v-show="!collapsed" class="toggle-text">收起菜单</span>
       </div>
       <div class="logout">
         <a-button type="primary" danger ghost block @click="handleLogout" :title="collapsed ? '退出登录' : ''">
-          <LogoutOutlined />
+          <Icon icon="ri:logout-box-r-fill" width="16" height="16" />
           <span v-show="!collapsed" style="margin-left: 6px">退出登录</span>
         </a-button>
       </div>
@@ -58,14 +58,14 @@
     <div class="content">
       <div class="header">
         <div class="header-left">
-          <MenuFoldOutlined v-if="!collapsed" class="collapse-btn" @click="collapsed = true" />
-          <MenuUnfoldOutlined v-else class="collapse-btn" @click="collapsed = false" />
+          <Icon icon="ri:menu-fold-fill" v-if="!collapsed" class="collapse-btn" @click="collapsed = true" width="18" height="18" />
+          <Icon icon="ri:menu-unfold-fill" v-else class="collapse-btn" @click="collapsed = false" width="18" height="18" />
           <h2>{{ pageTitle }}</h2>
         </div>
         <div class="header-right">
           <a-input-search
             v-model:value="globalSearchKey"
-            placeholder="搜索人员、谈话、家访..."
+            placeholder="搜索人员..."
             style="width: 260px; margin-right: 16px"
             allow-clear
             @search="handleGlobalSearch"
@@ -89,7 +89,7 @@
               </div>
             </template>
             <a-badge :count="unreadCount" :offset="[-2, 2]">
-              <BellOutlined class="notif-bell" />
+              <Icon icon="ri:notification-3-fill" class="notif-bell" width="20" height="20" />
             </a-badge>
           </a-popover>
         </div>
@@ -122,21 +122,7 @@
 <script setup>
 import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import {
-  UsergroupAddOutlined,
-  MessageOutlined,
-  UserOutlined,
-  LogoutOutlined,
-  UnorderedListOutlined,
-  SettingOutlined,
-  DashboardOutlined,
-  BarChartOutlined,
-  HomeOutlined,
-  BellOutlined,
-  ScheduleOutlined,
-  MenuFoldOutlined,
-  MenuUnfoldOutlined
-} from '@ant-design/icons-vue'
+import { Icon } from '@iconify/vue'
 import { getCurrentUser, clearAuth, hasPermission } from '../utils/auth'
 import { isBureauLeader as isBureauLeaderFn, isGlobalAdmin as isGlobalAdminFn, isAdmin as isAdminFn, isUnitHead as isUnitHeadFn, isDepartmentHead as isDepartmentHeadFn, canViewGlobalDashboard as canViewGlobalDashboardFn, canManagePersonnel as canManagePersonnelFn, hasSubordinates as hasSubordinatesFn, canViewActivityTasks as canViewActivityTasksFn } from '../utils/constants'
 import axios from '../utils/axios'
@@ -317,7 +303,9 @@ onUnmounted(() => {
 .sidebar {
   width: 250px;
   flex: 0 0 250px;
-  background-color: #001529;
+  background: rgba(0, 21, 41, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   color: #fff;
   display: flex;
   flex-direction: column;
@@ -333,9 +321,20 @@ onUnmounted(() => {
 }
 
 .logo {
-  padding: 20px;
-  border-bottom: 1px solid #1f2d3d;
+  padding: 24px 20px;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.08);
   white-space: nowrap;
+  position: relative;
+}
+
+.logo::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 20px;
+  right: 20px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
 }
 
 .logo h1 {
@@ -368,32 +367,39 @@ onUnmounted(() => {
 
 .menu {
   flex: 1;
-  padding: 20px 0;
+  padding: 16px 0;
   overflow-x: hidden;
 }
 
 .menu-item {
   display: flex;
   align-items: center;
-  padding: 12px 20px;
+  padding: 13px 20px;
+  margin: 2px 8px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: all 0.3s;
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
+  position: relative;
 }
 
 .menu-item:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 212, 255, 0.06);
 }
 
 .menu-item.active {
-  background: rgba(0, 212, 255, 0.15);
-  border-right: 3px solid #00d4ff;
+  background: rgba(0, 212, 255, 0.1);
   color: #00d4ff;
+  box-shadow: inset 3px 0 0 #00d4ff;
+}
+
+.menu-item.active .menu-icon {
+  color: #00d4ff;
+  filter: drop-shadow(0 0 4px rgba(0, 212, 255, 0.4));
 }
 
 .menu-icon {
   margin-right: 12px;
-  font-size: 16px;
   flex-shrink: 0;
 }
 
@@ -403,12 +409,12 @@ onUnmounted(() => {
 
 .sidebar.collapsed .menu-item {
   justify-content: center;
-  padding: 12px 0;
+  padding: 13px 0;
+  margin: 2px 6px;
 }
 
 .sidebar.collapsed .menu-item.active {
-  border-right: none;
-  border-left: 3px solid #00d4ff;
+  box-shadow: inset 3px 0 0 #00d4ff;
 }
 
 .menu-text {
@@ -421,7 +427,7 @@ onUnmounted(() => {
 
 .logout {
   padding: 20px;
-  border-top: 1px solid #1f2d3d;
+  border-top: 1px solid rgba(0, 212, 255, 0.08);
 }
 
 .sidebar.collapsed .logout {
@@ -438,7 +444,7 @@ onUnmounted(() => {
   justify-content: center;
   padding: 12px 20px;
   cursor: pointer;
-  border-top: 1px solid #1f2d3d;
+  border-top: 1px solid rgba(0, 212, 255, 0.08);
   color: #8892b0;
   transition: all 0.3s;
   gap: 8px;
@@ -466,14 +472,27 @@ onUnmounted(() => {
 }
 
 .header {
-  padding: 0 24px;
+  padding: 0 28px;
   height: 64px;
   line-height: 64px;
-  background: rgba(0, 21, 41, 0.9);
-  border-bottom: 1px solid rgba(0, 212, 255, 0.2);
+  background: rgba(0, 21, 41, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 212, 255, 0.08);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  position: relative;
+}
+
+.header::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.25), transparent);
 }
 
 .header-left {
@@ -483,14 +502,16 @@ onUnmounted(() => {
 }
 
 .header h2 {
-  font-size: 18px;
+  font-size: 17px;
   margin: 0;
   font-weight: 600;
-  color: #ccd6f6;
+  background: linear-gradient(90deg, #ccd6f6, #e6edf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 .collapse-btn {
-  font-size: 18px;
   color: #ccd6f6;
   cursor: pointer;
   transition: color 0.3s;
@@ -505,8 +526,16 @@ onUnmounted(() => {
   align-items: center;
 }
 
+.header-right :deep(.ant-input-search) {
+  transition: all 0.3s;
+}
+
+.header-right :deep(.ant-input-search:focus-within) {
+  box-shadow: 0 0 16px rgba(0, 212, 255, 0.15);
+  border-radius: 6px;
+}
+
 .notif-bell {
-  font-size: 20px;
   color: #ccd6f6;
   cursor: pointer;
   transition: color 0.3s;
@@ -601,5 +630,23 @@ onUnmounted(() => {
   padding: 24px;
   overflow: auto;
   background: transparent;
+  position: relative;
+}
+
+.main::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(0, 212, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.045) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.main > * {
+  position: relative;
+  z-index: 1;
 }
 </style>

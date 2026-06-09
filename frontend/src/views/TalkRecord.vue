@@ -87,8 +87,9 @@ const columns = [
 const fetchTalkRecords = async () => {
   loading.value = true;
   try {
-    // 后端已直接返回 talkerName / targetName，无需再逐条查询
-    const res = await axios.get('/api/talk-records/list');
+    const params = {};
+    if (searchKeyword.value) params.keyword = searchKeyword.value;
+    const res = await axios.get('/api/talk-records/list', { params });
     talkRecords.value = res;
   } catch (error) {
     message.error('获取谈话记录失败，请重试');
@@ -153,7 +154,10 @@ onMounted(fetchTalkRecords);
 
 .page-title {
   font-size: 18px;
-  font-weight: bold;
-  color: #fff;
+  font-weight: 600;
+  background: linear-gradient(90deg, #ccd6f6, #e6edf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 </style>

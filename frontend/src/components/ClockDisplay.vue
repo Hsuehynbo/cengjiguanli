@@ -33,7 +33,7 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 16px;
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-mono);
 }
 .time-display .date {
   font-size: 14px;

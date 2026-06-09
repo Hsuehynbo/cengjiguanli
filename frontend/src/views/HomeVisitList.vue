@@ -164,7 +164,10 @@ onMounted(fetchData);
 }
 .page-title {
   font-size: 18px;
-  font-weight: bold;
-  color: #fff;
+  font-weight: 600;
+  background: linear-gradient(90deg, #ccd6f6, #e6edf8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 </style>

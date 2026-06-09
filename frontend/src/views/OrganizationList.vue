@@ -221,7 +221,7 @@ onUnmounted(() => {
   min-height: 100vh;
   background: linear-gradient(135deg, #001529 0%, #0a1628 50%, #001529 100%);
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  /* font-family inherited from global */
 }
 
 /* 顶部信息栏 */
@@ -277,7 +277,7 @@ onUnmounted(() => {
   font-size: 20px;
   font-weight: 600;
   color: #00d4ff;
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-mono);
 }
 
 /* 主体左右分栏 */

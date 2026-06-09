@@ -7,7 +7,11 @@ export const RISK_LEVEL_MAP = {
 
 export const TALK_TYPE_OPTIONS = ['日常沟通', '工作指导', '诫勉谈话', '提醒谈话', '廉政谈话']
 
-export const VISIT_TYPE_OPTIONS = ['例行家访', '特殊家访', '慰问家访']
+export const VISIT_TYPE_OPTIONS = [
+  { value: '例行家访', label: '例行家访' },
+  { value: '特殊家访', label: '特殊家访' },
+  { value: '慰问家访', label: '慰问家访' }
+]
 
 export function isBureauLeader(user) {
   const pos = user?.position || ''

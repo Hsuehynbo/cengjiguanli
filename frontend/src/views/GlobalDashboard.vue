@@ -3,7 +3,7 @@
     <!-- 顶部信息栏 -->
     <div class="top-bar">
       <div class="title-section">
-        <span class="main-title">智慧警务云平台</span>
+        <span class="main-title">云和县公安局层级管理系统</span>
 <!--        <span class="sub-title">全局管理看板</span>-->
       </div>
       <div class="info-section">
@@ -17,34 +17,36 @@
 
         <div class="stat-card tech-card">
           <div class="card-header">
-            <span class="card-icon">💬</span>
+            <div class="card-icon-wrap cyan"><Icon icon="ri:chat-3-fill" width="20" height="20" /></div>
             <span class="card-label">本月谈话完成率</span>
           </div>
           <div class="card-value"><NumberCounter :value="summary.talkRate" />%</div>
           <div class="card-trend">
-            <span class="trend-icon">✅</span>
+            <Icon icon="ri:checkbox-circle-fill" width="14" height="14" style="color: #10b981" />
+            <span>已完成</span>
           </div>
         </div>
 
         <div class="stat-card tech-card">
           <div class="card-header">
-            <span class="card-icon">🏠</span>
+            <div class="card-icon-wrap cyan"><Icon icon="ri:home-heart-fill" width="20" height="20" /></div>
             <span class="card-label">本月家访数</span>
           </div>
           <div class="card-value"><NumberCounter :value="summary.homeVisitCount" /></div>
           <div class="card-trend">
-            <span class="trend-icon">🎯</span>
+            <Icon icon="ri:target-fill" width="14" height="14" style="color: #00d4ff" />
+            <span>本月累计</span>
           </div>
         </div>
 
         <div class="stat-card tech-card key-card clickable-card" @click="openRiskUserModal('KEY')">
           <div class="card-header">
-            <span class="card-icon">⚠️</span>
+            <div class="card-icon-wrap red"><Icon icon="ri:error-warning-fill" width="20" height="20" /></div>
             <span class="card-label">重点人员</span>
           </div>
           <div class="card-value highlight-red"><NumberCounter :value="summary.keyCount" color="#ef4444" /></div>
           <div class="card-trend">
-            <span class="trend-icon">🔴</span>
+            <Icon icon="ri:alert-fill" width="14" height="14" style="color: #ef4444" />
             <span>需重点关注</span>
           </div>
           <div class="card-click-hint">点击查看详情</div>
@@ -52,12 +54,12 @@
 
         <div class="stat-card tech-card warning-card clickable-card" @click="openRiskUserModal('RISK')">
           <div class="card-header">
-            <span class="card-icon">⚠️</span>
+            <div class="card-icon-wrap orange"><Icon icon="ri:shield-check-fill" width="20" height="20" /></div>
             <span class="card-label">风险人员</span>
           </div>
           <div class="card-value highlight-orange"><NumberCounter :value="summary.riskCount" color="#f59e0b" /></div>
           <div class="card-trend">
-            <span class="trend-icon">🟠</span>
+            <Icon icon="ri:alarm-warning-fill" width="14" height="14" style="color: #f59e0b" />
             <span>需加强管控</span>
           </div>
           <div class="card-click-hint">点击查看详情</div>
@@ -65,39 +67,41 @@
 
         <div class="stat-card tech-card success-card clickable-card" @click="openRiskUserModal('ATTENTION')">
           <div class="card-header">
-            <span class="card-icon">👁️</span>
+            <div class="card-icon-wrap green"><Icon icon="ri:eye-fill" width="20" height="20" /></div>
             <span class="card-label">关注人员</span>
           </div>
           <div class="card-value highlight-green"><NumberCounter :value="summary.attentionCount" color="#10b981" /></div>
           <div class="card-trend">
-            <span class="trend-icon">🟢</span>
+            <Icon icon="ri:eye-line" width="14" height="14" style="color: #10b981" />
             <span>持续观察中</span>
           </div>
           <div class="card-click-hint">点击查看详情</div>
         </div>
 
-        <div class="stat-card tech-card">
+        <div class="stat-card tech-card clickable-card" @click="$router.push('/talk')">
           <div class="card-header">
-            <span class="card-icon">📋</span>
+            <div class="card-icon-wrap cyan"><Icon icon="ri:task-fill" width="20" height="20" /></div>
             <span class="card-label">待办任务</span>
           </div>
           <div class="card-value"><NumberCounter :value="summary.pendingTasks" /></div>
           <div class="card-trend">
-            <span class="trend-icon">⏰</span>
+            <Icon icon="ri:time-fill" width="14" height="14" style="color: #8892b0" />
             <span>今日需处理</span>
           </div>
+          <div class="card-click-hint">点击查看详情</div>
         </div>
 
-        <div class="stat-card tech-card activity-card">
+        <div class="stat-card tech-card activity-card clickable-card" @click="$router.push('/activity-tasks')">
           <div class="card-header">
-            <span class="card-icon">📢</span>
+            <div class="card-icon-wrap purple"><Icon icon="ri:calendar-event-fill" width="20" height="20" /></div>
             <span class="card-label">活动任务</span>
           </div>
           <div class="card-value"><NumberCounter :value="summary.activeTasks" /></div>
           <div class="card-trend">
-            <span class="trend-icon">📌</span>
+            <Icon icon="ri:pin-distance-fill" width="14" height="14" style="color: #7c3aed" />
             <span>进行中 {{ summary.activeTasks }} / 已结束 {{ summary.closedTasks }}</span>
           </div>
+          <div class="card-click-hint">点击查看详情</div>
         </div>
       </div>
     </a-skeleton>
@@ -200,13 +204,15 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, onUnmounted } from 'vue';
+import { ref, reactive, onMounted, onUnmounted, nextTick } from 'vue';
+import { gsap } from 'gsap';
 import * as echarts from 'echarts';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import axios from '../utils/axios';
 import NumberCounter from '../components/NumberCounter.vue';
 import ClockDisplay from '../components/ClockDisplay.vue';
+import { Icon } from '@iconify/vue';
 import { RISK_LEVEL_MAP } from '../utils/constants';
 
 const router = useRouter();
@@ -489,6 +495,25 @@ onMounted(() => {
   initCharts();
   fetchData();
   window.addEventListener('resize', handleResize);
+
+  nextTick(() => {
+    gsap.from('.stat-card', {
+      opacity: 0,
+      y: 30,
+      duration: 0.5,
+      stagger: 0.08,
+      ease: 'power2.out',
+      delay: 0.2
+    });
+    gsap.from('.chart-card', {
+      opacity: 0,
+      y: 40,
+      duration: 0.6,
+      stagger: 0.1,
+      ease: 'power2.out',
+      delay: 0.6
+    });
+  });
 });
 
 onUnmounted(() => {
@@ -503,7 +528,6 @@ onUnmounted(() => {
   min-height: 100vh;
   background: linear-gradient(135deg, #001529 0%, #0a1628 50%, #001529 100%);
   padding: 20px;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 /* 顶部信息栏 */
@@ -512,11 +536,12 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  background: linear-gradient(90deg, rgba(0, 212, 255, 0.1), transparent);
-  border-radius: 12px;
-  border: 1px solid rgba(0, 212, 255, 0.3);
+  background: rgba(0, 21, 41, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 14px;
+  border: 1px solid rgba(0, 212, 255, 0.1);
   margin-bottom: 24px;
-  box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
 }
 
 .title-section {
@@ -559,23 +584,25 @@ onUnmounted(() => {
   font-size: 20px;
   font-weight: 600;
   color: #00d4ff;
-  font-family: 'Courier New', monospace;
+  font-family: var(--font-mono);
 }
 
 /* 数据卡片网格 */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 14px;
   margin-bottom: 24px;
 }
 
 .stat-card {
-  background: rgba(0, 21, 41, 0.8);
-  border-radius: 12px;
+  background: rgba(0, 21, 41, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-radius: 14px;
   padding: 20px;
-  border: 1px solid rgba(0, 212, 255, 0.2);
-  transition: all 0.3s ease;
+  border: 1px solid rgba(0, 212, 255, 0.12);
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
 }
@@ -588,23 +615,74 @@ onUnmounted(() => {
   right: 0;
   height: 2px;
   background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+  opacity: 0.6;
+}
+
+.stat-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 212, 255, 0.06) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
 }
 
 .stat-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(0, 212, 255, 0.5);
-  box-shadow: 0 8px 30px rgba(0, 212, 255, 0.2);
+  transform: translateY(-3px);
+  border-color: rgba(0, 212, 255, 0.35);
+  box-shadow: 0 4px 24px rgba(0, 212, 255, 0.12), 0 0 40px rgba(0, 212, 255, 0.06);
+}
+
+.stat-card:hover::after {
+  opacity: 1;
 }
 
 .card-header {
   display: flex;
   align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 10px;
+  margin-bottom: 16px;
 }
 
-.card-icon {
-  font-size: 20px;
+.card-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.card-icon-wrap.cyan {
+  background: rgba(0, 212, 255, 0.12);
+  color: #00d4ff;
+  box-shadow: 0 0 12px rgba(0, 212, 255, 0.15);
+}
+
+.card-icon-wrap.red {
+  background: rgba(239, 68, 68, 0.12);
+  color: #ef4444;
+  box-shadow: 0 0 12px rgba(239, 68, 68, 0.15);
+}
+
+.card-icon-wrap.orange {
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+  box-shadow: 0 0 12px rgba(245, 158, 11, 0.15);
+}
+
+.card-icon-wrap.green {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
+}
+
+.card-icon-wrap.purple {
+  background: rgba(124, 58, 237, 0.12);
+  color: #7c3aed;
+  box-shadow: 0 0 12px rgba(124, 58, 237, 0.15);
 }
 
 .card-label {
@@ -613,10 +691,11 @@ onUnmounted(() => {
 }
 
 .card-value {
-  font-size: 36px;
+  font-size: 32px;
   font-weight: 700;
   color: #fff;
-  margin-bottom: 8px;
+  margin-bottom: 12px;
+  line-height: 1;
 }
 
 .card-trend {
@@ -624,11 +703,7 @@ onUnmounted(() => {
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: #64ffda;
-}
-
-.trend-icon {
-  font-size: 12px;
+  color: #8892b0;
 }
 
 .key-card {

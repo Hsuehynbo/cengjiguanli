@@ -4,14 +4,13 @@
       <template #title>
         <div class="header-content">
           <a-button type="link" @click="$router.back()"><left-outlined /> 返回</a-button>
-          <span class="page-title">{{ editMode ? '编辑谈话记录' : '谈话详情记录' }}</span>
-          <a-button v-if="!editMode && canEdit(record)" type="primary" size="small" style="margin-left: auto" @click="enterEdit">编辑</a-button>
+          <span class="page-title">谈话详情记录</span>
+          <a-button v-if="canEdit(record)" type="primary" size="small" style="margin-left: auto" @click="goToEdit">编辑</a-button>
         </div>
       </template>
 
       <a-spin :spinning="loading">
-        <!-- 查看模式 -->
-        <div v-if="record && !editMode" class="detail-full-content">
+        <div v-if="record" class="detail-full-content">
           <div class="info-grid">
             <div class="info-item">
               <span class="info-label">谈话人：</span>
@@ -52,35 +51,6 @@
           </div>
         </div>
 
-        <!-- 编辑模式 -->
-        <div v-if="record && editMode" class="detail-full-content">
-          <a-form :model="editForm" layout="vertical">
-            <a-row :gutter="24">
-              <a-col :span="12">
-                <a-form-item label="谈话类型">
-                  <a-select v-model:value="editForm.talkType">
-                    <a-select-option v-for="opt in TALK_TYPE_OPTIONS" :key="opt" :value="opt">{{ opt }}</a-select-option>
-                  </a-select>
-                </a-form-item>
-              </a-col>
-              <a-col :span="12">
-                <a-form-item label="谈话地点">
-                  <a-input v-model:value="editForm.location" />
-                </a-form-item>
-              </a-col>
-            </a-row>
-            <a-form-item label="谈话内容">
-              <a-textarea v-model:value="editForm.content" :rows="6" />
-            </a-form-item>
-          </a-form>
-          <div style="text-align: right; margin-top: 16px">
-            <a-space>
-              <a-button @click="editMode = false">取消</a-button>
-              <a-button type="primary" :loading="saving" @click="handleSave">保存</a-button>
-            </a-space>
-          </div>
-        </div>
-
         <a-empty v-else-if="!loading && !record" description="未找到谈话记录详情" />
       </a-spin>
     </a-card>
@@ -88,14 +58,14 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { LeftOutlined } from '@ant-design/icons-vue';
 import axios from '../utils/axios';
 import { message } from 'ant-design-vue';
 import { getCurrentUser } from '../utils/auth';
 import { getFileUrl } from '../utils/axios';
-import { TALK_TYPE_OPTIONS, isBureauLeader as isBureauLeaderFn } from '../utils/constants';
+import { isBureauLeader as isBureauLeaderFn } from '../utils/constants';
 
 const currentUser = getCurrentUser();
 const canEdit = (record) => currentUser?.jobNo === 'admin' || currentUser?.role === 'ADMIN_GLOBAL' || isBureauLeaderFn(currentUser) || record?.talkerJobNo === currentUser?.jobNo;
@@ -103,16 +73,9 @@ const canEdit = (record) => currentUser?.jobNo === 'admin' || currentUser?.role 
 const route = useRoute();
 const router = useRouter();
 const loading = ref(false);
-const saving = ref(false);
 const record = ref(null);
 const talkerName = ref('');
 const targetName = ref('');
-const editMode = ref(false);
-const editForm = reactive({
-  talkType: '',
-  location: '',
-  content: ''
-});
 
 const fetchDetail = async () => {
   const id = route.params.id;
@@ -124,10 +87,6 @@ const fetchDetail = async () => {
     record.value = res;
     talkerName.value = res.talkerName || '';
     targetName.value = res.targetName || '';
-
-    if (route.query.edit === '1') {
-      enterEdit();
-    }
   } catch (error) {
     message.error('加载详情失败');
   } finally {
@@ -135,36 +94,8 @@ const fetchDetail = async () => {
   }
 };
 
-const enterEdit = () => {
-  editForm.talkType = record.value.talkType;
-  editForm.location = record.value.location;
-  editForm.content = record.value.content;
-  editMode.value = true;
-};
-
-const handleSave = async () => {
-  if (!editForm.content) {
-    message.warning('谈话内容不能为空');
-    return;
-  }
-  saving.value = true;
-  try {
-    await axios.put(`/api/talk-records/${record.value.id}`, {
-      talkerJobNo: record.value.talkerJobNo,
-      targetJobNo: record.value.targetJobNo,
-      talkTime: record.value.talkTime,
-      talkType: editForm.talkType,
-      location: editForm.location,
-      content: editForm.content
-    });
-    message.success('保存成功');
-    editMode.value = false;
-    fetchDetail();
-  } catch {
-    message.error('保存失败');
-  } finally {
-    saving.value = false;
-  }
+const goToEdit = () => {
+  router.push(`/talk-add?id=${record.value.id}`);
 };
 
 const getPhotoUrl = (photo) => {

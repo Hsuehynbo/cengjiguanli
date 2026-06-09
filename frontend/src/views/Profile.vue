@@ -36,7 +36,7 @@
           <a-row :gutter="16">
             <a-col :span="8">
               <div class="stat-item">
-                <a-statistic title="累计发起谈话" :value="stats.talkCount" value-style="color: #1890ff" />
+                <a-statistic title="累计接受谈话" :value="stats.talkCount" value-style="color: #1890ff" />
                 <message-outlined class="stat-icon" style="color: rgba(0, 212, 255, 0.15)" />
               </div>
             </a-col>
@@ -222,8 +222,9 @@ const getTalkTypeColor = (type) => {
   const map = {
     '日常沟通': 'blue',
     '工作指导': 'green',
-    '绩效面谈': 'orange',
-    '问题谈话': 'red'
+    '诫勉谈话': 'red',
+    '提醒谈话': 'orange',
+    '廉政谈话': 'purple'
   };
   return map[type] || 'default';
 };

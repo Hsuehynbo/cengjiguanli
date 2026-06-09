@@ -60,6 +60,10 @@
             </a-col>
           </a-row>
 
+          <a-form-item label="家访地点" name="location">
+            <a-input v-model:value="form.location" placeholder="请输入家访地点" />
+          </a-form-item>
+
           <a-form-item label="家访内容" name="content">
             <a-textarea v-model:value="form.content" :rows="6" placeholder="请输入家访详细内容" />
           </a-form-item>

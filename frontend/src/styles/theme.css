@@ -19,6 +19,7 @@
   --success-glow: rgba(16, 185, 129, 0.3);
   --purple: #7c3aed;
   --purple-glow: rgba(124, 58, 237, 0.3);
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
 }
 
 * {
@@ -56,27 +57,42 @@ body {
 
 /* Tech card base */
 .tech-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-primary);
-  border-radius: 8px;
-  padding: 20px;
+  background: rgba(0, 21, 41, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 212, 255, 0.1);
+  border-radius: 14px;
+  padding: 24px;
   position: relative;
-  transition: all 0.3s ease;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .tech-card::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 20px;
-  right: 20px;
+  left: 24px;
+  right: 24px;
   height: 1px;
   background: var(--accent-gradient);
-  opacity: 0.6;
+  opacity: 0.4;
+}
+.tech-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 212, 255, 0.05) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
 }
 .tech-card:hover {
-  border-color: var(--border-accent);
-  box-shadow: 0 4px 20px rgba(0, 212, 255, 0.15);
+  border-color: rgba(0, 212, 255, 0.25);
+  box-shadow: 0 4px 24px rgba(0, 212, 255, 0.1), 0 0 40px rgba(0, 212, 255, 0.05);
   transform: translateY(-2px);
+}
+.tech-card:hover::after {
+  opacity: 1;
 }
 
 /* Tech page title */
@@ -93,13 +109,15 @@ body {
 
 /* Stat card */
 .tech-stat-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-primary);
-  border-radius: 8px;
-  padding: 18px 16px;
+  background: rgba(0, 21, 41, 0.55);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(0, 212, 255, 0.1);
+  border-radius: 14px;
+  padding: 20px 18px;
   position: relative;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
 }
 .tech-stat-card::before {
@@ -110,11 +128,25 @@ body {
   right: 0;
   height: 3px;
   background: var(--accent-gradient);
+  opacity: 0.5;
+}
+.tech-stat-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 14px;
+  background: radial-gradient(ellipse at 50% 0%, rgba(0, 212, 255, 0.06) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.35s;
+  pointer-events: none;
 }
 .tech-stat-card:hover {
-  border-color: var(--border-accent);
-  box-shadow: 0 0 24px rgba(0, 212, 255, 0.2);
-  transform: translateY(-4px);
+  border-color: rgba(0, 212, 255, 0.3);
+  box-shadow: 0 4px 24px rgba(0, 212, 255, 0.12), 0 0 40px rgba(0, 212, 255, 0.05);
+  transform: translateY(-3px);
+}
+.tech-stat-card:hover::after {
+  opacity: 1;
 }
 
 /* Animated flow line */
@@ -141,12 +173,15 @@ body {
 
 /* Card */
 .ant-card {
-  background: var(--bg-card) !important;
-  border: 1px solid var(--border-primary) !important;
+  background: rgba(0, 21, 41, 0.55) !important;
+  backdrop-filter: blur(16px) !important;
+  -webkit-backdrop-filter: blur(16px) !important;
+  border: 1px solid rgba(0, 212, 255, 0.1) !important;
+  border-radius: 14px !important;
 }
 .ant-card-head {
-  background: var(--bg-card) !important;
-  border-bottom: 1px solid rgba(0, 212, 255, 0.15) !important;
+  background: transparent !important;
+  border-bottom: 1px solid rgba(0, 212, 255, 0.1) !important;
 }
 .ant-card-head-title {
   color: var(--text-primary) !important;
@@ -154,23 +189,44 @@ body {
 
 /* Table */
 .ant-table {
-  background: var(--bg-table) !important;
+  background: transparent !important;
   color: var(--text-secondary) !important;
+  border-radius: 12px !important;
 }
 .ant-table-thead > tr > th {
-  background: var(--bg-secondary) !important;
-  color: var(--text-secondary) !important;
-  border-color: rgba(0, 212, 255, 0.15) !important;
+  background: rgba(0, 212, 255, 0.05) !important;
+  color: #ccd6f6 !important;
+  font-weight: 600 !important;
+  border-color: rgba(0, 212, 255, 0.08) !important;
+  padding: 14px 16px !important;
+  font-size: 13px !important;
+  letter-spacing: 0.3px;
+}
+.ant-table-thead > tr > th::before {
+  display: none !important;
 }
 .ant-table-tbody > tr > td {
-  border-color: rgba(0, 212, 255, 0.1) !important;
+  border-color: rgba(0, 212, 255, 0.06) !important;
   color: var(--text-secondary) !important;
+  padding: 14px 16px !important;
+  transition: background 0.2s;
 }
 .ant-table-tbody > tr:hover > td {
-  background: rgba(0, 212, 255, 0.08) !important;
+  background: rgba(0, 212, 255, 0.05) !important;
+}
+.ant-table-tbody > tr {
+  position: relative;
 }
 .ant-table-wrapper .ant-table-container {
-  border-color: rgba(0, 212, 255, 0.15) !important;
+  border-color: rgba(0, 212, 255, 0.08) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+.ant-table-cell-row-hover {
+  background: rgba(0, 212, 255, 0.05) !important;
+}
+.ant-table-wrapper .ant-table {
+  border-radius: 12px !important;
 }
 .ant-table-column-sorter {
   color: var(--text-muted) !important;

@@ -49,7 +49,8 @@
                   <a-space>
                     <a-button type="link" @click="viewDetail(record)">查看详情</a-button>
                     <template v-if="isRecordOwner(record.talkerJobNo)">
-                      <a-button type="link" @click="editRecord(record)">编辑</a-button>
+                      <a-button type="link" @click="goToFullEditTalk(record)">完整编辑</a-button>
+                      <a-button type="link" @click="editRecord(record)">快速编辑</a-button>
                       <a-popconfirm
                         title="确定要删除这条谈话记录吗？"
                         @confirm="deleteRecord(record.id)"
@@ -82,9 +83,9 @@
               <template #bodyCell="{ column, record }">
                 <template v-if="column.key === 'action'">
                   <a-space>
-                    <a-button type="link" @click="viewHomeVisitDetail(record)">查看详情</a-button>
+                    <a-button type="link" @click="viewHomeVisitDetail(record)">完整编辑</a-button>
                     <template v-if="isRecordOwner(record.operatorJobNo)">
-                      <a-button type="link" @click="editHomeVisitRecord(record)">编辑</a-button>
+                      <a-button type="link" @click="editHomeVisitRecord(record)">快速编辑</a-button>
                       <a-popconfirm
                           title="确定要删除这条家访记录吗？"
                           @confirm="deleteHomeVisitRecord(record.id)"
@@ -436,8 +437,12 @@ const goToAddHomeVisit = () => {
 const viewDetail = (record) => {
   router.push({
     name: 'TalkDetail',
-    query: { id: record.id }
+    params: { id: record.id }
   });
+};
+
+const goToFullEditTalk = (record) => {
+  router.push(`/talk-add?id=${record.id}`);
 };
 
 const viewHomeVisitDetail = (record) => {

@@ -4,7 +4,7 @@
       <template #title>
         <div class="header-content">
           <a-button type="link" @click="$router.back()"><left-outlined /> 返回</a-button>
-          <span class="page-title">{{ isEditMode ? '谈话记录详情' : '新增谈话记录' }}</span>
+          <span class="page-title">{{ isEditMode ? '编辑谈话记录' : '新增谈话记录' }}</span>
         </div>
       </template>
 
@@ -46,13 +46,12 @@
                   show-time
                   style="width: 100%"
                   placeholder="请选择谈话时间"
-                  :disabled="isEditMode"
                 />
               </a-form-item>
             </a-col>
             <a-col :span="12">
               <a-form-item label="谈话类型" name="talkType">
-                <a-select v-model:value="form.talkType" placeholder="请选择谈话类型" :disabled="isEditMode">
+                <a-select v-model:value="form.talkType" placeholder="请选择谈话类型">
                   <a-select-option v-for="opt in TALK_TYPE_OPTIONS" :key="opt" :value="opt">{{ opt }}</a-select-option>
                 </a-select>
               </a-form-item>
@@ -60,11 +59,11 @@
           </a-row>
 
           <a-form-item label="谈话地点" name="location">
-            <a-input v-model:value="form.location" placeholder="请输入谈话地点" :disabled="isEditMode" />
+            <a-input v-model:value="form.location" placeholder="请输入谈话地点" />
           </a-form-item>
 
           <a-form-item label="谈话内容" name="content">
-            <a-textarea v-model:value="form.content" :rows="6" placeholder="请输入谈话详细内容" :disabled="isEditMode" />
+            <a-textarea v-model:value="form.content" :rows="6" placeholder="请输入谈话详细内容" />
           </a-form-item>
 
           <a-form-item label="相关照片" name="photo">
@@ -73,11 +72,10 @@
               name="photo"
               list-type="picture-card"
               :max-count="1"
-              :before-upload="isEditMode ? () => false : beforeUpload"
+              :before-upload="beforeUpload"
               @preview="handlePreview"
-              :disabled="isEditMode"
             >
-              <div v-if="fileList.length < 1 && !isEditMode">
+              <div v-if="fileList.length < 1">
                 <plus-outlined />
                 <div style="margin-top: 8px">上传照片</div>
               </div>
@@ -92,7 +90,7 @@
           <div class="form-footer">
             <a-space>
               <a-button @click="$router.back()">返回</a-button>
-              <a-button v-if="!isEditMode" type="primary" :loading="submitting" @click="handleSubmit">提交记录</a-button>
+              <a-button type="primary" :loading="submitting" @click="handleSubmit">{{ isEditMode ? '保存修改' : '提交记录' }}</a-button>
             </a-space>
           </div>
         </a-form>

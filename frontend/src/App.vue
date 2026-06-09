@@ -1,12 +1,47 @@
 <template>
   <a-config-provider :theme="themeConfig">
     <div class="app">
-      <router-view />
+      <router-view v-slot="{ Component, route }">
+        <Transition
+          :css="false"
+          @before-enter="onBeforeEnter"
+          @enter="onEnter"
+          @leave="onLeave"
+        >
+          <component :is="Component" :key="route.path" />
+        </Transition>
+      </router-view>
     </div>
   </a-config-provider>
 </template>
 
 <script setup>
+import { gsap } from 'gsap'
+
+function onBeforeEnter(el) {
+  gsap.set(el, { opacity: 0, y: 20 })
+}
+
+function onEnter(el, done) {
+  gsap.to(el, {
+    opacity: 1,
+    y: 0,
+    duration: 0.4,
+    ease: 'power2.out',
+    onComplete: done
+  })
+}
+
+function onLeave(el, done) {
+  gsap.to(el, {
+    opacity: 0,
+    y: -10,
+    duration: 0.25,
+    ease: 'power2.in',
+    onComplete: done
+  })
+}
+
 const themeConfig = {
   token: {
     colorBgContainer: 'rgba(0, 21, 41, 0.85)',

@@ -40,6 +40,7 @@ watch(() => props.value, (newVal, oldVal) => {
 
 <style scoped>
 .number-counter {
+  font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   font-weight: 700;
 }

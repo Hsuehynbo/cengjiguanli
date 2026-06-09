@@ -179,19 +179,23 @@ onMounted(fetchDetail);
   flex: 1;
   text-align: center;
   padding: 16px;
-  border: 1px solid #d9d9d9;
-  border-radius: 6px;
+  background: rgba(0, 21, 41, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 212, 255, 0.1);
+  border-radius: 12px;
 }
 .stat-value {
   font-size: 28px;
   font-weight: 600;
+  font-family: var(--font-mono);
 }
-.stat-value.success { color: #52c41a; }
-.stat-value.warning { color: #faad14; }
-.stat-value.primary { color: #1890ff; }
+.stat-value.success { color: #10b981; }
+.stat-value.warning { color: #f59e0b; }
+.stat-value.primary { color: #00d4ff; }
 .stat-label {
   font-size: 13px;
-  color: #666;
+  color: #8892b0;
   margin-top: 4px;
 }
 </style>
