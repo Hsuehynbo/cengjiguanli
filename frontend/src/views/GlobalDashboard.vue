@@ -562,7 +562,7 @@ onUnmounted(() => {
 /* 数据卡片网格 */
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
   gap: 14px;
   margin-bottom: 24px;
 }
@@ -570,12 +570,14 @@ onUnmounted(() => {
 .stat-card {
   background: var(--bg-card);
   border-radius: var(--radius-lg);
-  padding: 20px;
+  padding: 16px 20px;
   border: 1px solid var(--border-color);
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 16px;
 }
 
 .stat-card:hover {
@@ -588,7 +590,8 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 16px;
+  flex: 1;
+  min-width: 0;
 }
 
 .card-icon-wrap {
@@ -632,11 +635,12 @@ onUnmounted(() => {
 }
 
 .card-value {
-  font-size: 32px;
+  font-size: 28px;
   font-weight: 700;
   color: var(--text-title);
-  margin-bottom: 12px;
   line-height: 1;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
 }
 
 .card-trend {
@@ -645,6 +649,8 @@ onUnmounted(() => {
   gap: 6px;
   font-size: 12px;
   color: var(--text-muted);
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .key-card {
@@ -677,8 +683,7 @@ onUnmounted(() => {
 }
 
 .card-click-hint {
-  font-size: 11px;
-  color: var(--accent);
+  display: none;
   opacity: 0.7;
   margin-top: 4px;
 }
