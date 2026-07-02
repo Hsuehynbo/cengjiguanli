@@ -575,6 +575,7 @@ onUnmounted(() => {
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
+  display: block;
 }
 
 .stat-card:hover {

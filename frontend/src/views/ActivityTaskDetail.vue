@@ -182,6 +182,7 @@ onMounted(fetchDetail);
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 12px;
+  display: block;
 }
 .stat-value {
   font-size: 28px;

@@ -516,6 +516,7 @@ onUnmounted(() => {
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
+  display: block;
 }
 
 .stat-card:hover {
