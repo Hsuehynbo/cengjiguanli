@@ -106,28 +106,6 @@
       </div>
     </a-skeleton>
 
-    <!-- 图表区域 -->
-    <a-skeleton :loading="loading" active :paragraph="{ rows: 6 }">
-      <div class="charts-grid">
-
-        <!-- 折线图：谈话记录趋势 -->
-        <div class="chart-card tech-card wide-card">
-          <div class="chart-header">
-            <span class="chart-title">近7天谈话记录趋势</span>
-          </div>
-          <div ref="lineChart" class="chart-container"></div>
-        </div>
-
-        <!-- 柱状图：各部门完成率对比 -->
-        <div class="chart-card tech-card wide-card">
-          <div class="chart-header">
-            <span class="chart-title">各部门工作完成率对比</span>
-          </div>
-          <div ref="deptCompareChart" class="chart-container"></div>
-        </div>
-      </div>
-    </a-skeleton>
-
     <!-- 底部数据表格 -->
     <a-skeleton :loading="loading" active :paragraph="{ rows: 4 }">
       <div class="table-card tech-card">
@@ -204,9 +182,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted, onUnmounted, nextTick } from 'vue';
+import { ref, reactive, onMounted, nextTick } from 'vue';
 import { gsap } from 'gsap';
-import * as echarts from 'echarts';
 import { useRouter } from 'vue-router';
 import { message } from 'ant-design-vue';
 import axios from '../utils/axios';
@@ -235,12 +212,6 @@ const summary = reactive({
 const departments = ref([]);
 const allUsers = ref([]);
 
-const lineChart = ref(null);
-const deptCompareChart = ref(null);
-
-let lineChartInstance = null;
-let deptCompareChartInstance = null;
-
 const columns = [
   { title: '部门', dataIndex: 'name', key: 'name', width: 180 },
   { title: '人数', dataIndex: 'total', key: 'total', width: 80, align: 'center' },
@@ -267,187 +238,6 @@ const riskColumns = [
   { title: '操作', key: 'action', align: 'center', width: 100 }
 ];
 
-const initCharts = () => {
-  if (!lineChart.value || !deptCompareChart.value) {
-    setTimeout(initCharts, 100);
-    return;
-  }
-
-  // 折线图配置（空数据占位）
-  lineChartInstance = echarts.init(lineChart.value);
-  lineChartInstance.setOption({
-    tooltip: {
-      trigger: 'axis',
-      backgroundColor: 'rgba(30, 41, 59, 0.95)',
-      borderColor: '#3b82f6',
-      textStyle: { color: '#f1f5f9' }
-    },
-    legend: {
-      data: ['谈话记录', '家访记录'],
-      textStyle: { color: '#94a3b8' }
-    },
-    grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
-      containLabel: true
-    },
-    xAxis: {
-      type: 'category',
-      boundaryGap: false,
-      data: [],
-      axisLine: { lineStyle: { color: '#cbd5e1' } },
-      axisLabel: { color: '#94a3b8' }
-    },
-    yAxis: {
-      type: 'value',
-      axisLine: { lineStyle: { color: '#cbd5e1' } },
-      axisLabel: { color: '#94a3b8' },
-      splitLine: { lineStyle: { color: '#e2e8f0' } }
-    },
-    series: [
-      {
-        name: '谈话记录',
-        type: 'line',
-        smooth: true,
-        data: [],
-        lineStyle: { color: '#2563eb', width: 3 },
-        areaStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'rgba(37, 99, 235, 0.3)' },
-            { offset: 1, color: 'rgba(37, 99, 235, 0.05)' }
-          ])
-        },
-        symbol: 'circle',
-        symbolSize: 8,
-        itemStyle: { color: '#2563eb' }
-      },
-      {
-        name: '家访记录',
-        type: 'line',
-        smooth: true,
-        data: [],
-        lineStyle: { color: '#7c3aed', width: 3 },
-        areaStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'rgba(124, 58, 237, 0.3)' },
-            { offset: 1, color: 'rgba(124, 58, 237, 0.05)' }
-          ])
-        },
-        symbol: 'circle',
-        symbolSize: 8,
-        itemStyle: { color: '#7c3aed' }
-      }
-    ]
-  });
-
-  // 部门完成率对比柱状图
-  deptCompareChartInstance = echarts.init(deptCompareChart.value);
-  deptCompareChartInstance.setOption({
-    tooltip: {
-      trigger: 'axis',
-      backgroundColor: 'rgba(30, 41, 59, 0.95)',
-      borderColor: '#3b82f6',
-      textStyle: { color: '#f1f5f9' },
-      formatter: (params) => {
-        let tip = params[0].name + '<br/>';
-        params.forEach(p => {
-          tip += `${p.marker} ${p.seriesName}: ${p.value}%<br/>`;
-        });
-        return tip;
-      }
-    },
-    legend: {
-      data: ['谈话完成率', '家访完成率'],
-      textStyle: { color: '#94a3b8' }
-    },
-    grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '8%',
-      containLabel: true
-    },
-    xAxis: {
-      type: 'category',
-      data: [],
-      axisLine: { lineStyle: { color: '#cbd5e1' } },
-      axisLabel: { color: '#94a3b8', rotate: 30 }
-    },
-    yAxis: {
-      type: 'value',
-      max: 100,
-      axisLine: { lineStyle: { color: '#cbd5e1' } },
-      axisLabel: { color: '#94a3b8', formatter: '{value}%' },
-      splitLine: { lineStyle: { color: '#e2e8f0' } }
-    },
-    series: [
-      {
-        name: '谈话完成率',
-        type: 'bar',
-        barWidth: '30%',
-        data: [],
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: '#2563eb' },
-            { offset: 1, color: '#1d4ed8' }
-          ]),
-          borderRadius: [4, 4, 0, 0]
-        }
-      },
-      {
-        name: '家访完成率',
-        type: 'bar',
-        barWidth: '30%',
-        data: [],
-        itemStyle: {
-          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: '#7c3aed' },
-            { offset: 1, color: '#5b21b6' }
-          ]),
-          borderRadius: [4, 4, 0, 0]
-        }
-      }
-    ]
-  });
-};
-
-const updateCharts = async () => {
-  // 等待图表实例就绪
-  if (!lineChartInstance && !deptCompareChartInstance) {
-    setTimeout(() => updateCharts(), 100);
-    return;
-  }
-
-  // 更新部门完成率对比图
-  if (deptCompareChartInstance && departments.value.length) {
-    deptCompareChartInstance.setOption({
-      xAxis: { data: departments.value.map(d => d.name) },
-      series: [
-        { data: departments.value.map(d => d.rate || 0) },
-        { data: departments.value.map(d => d.homeVisitRate || 0) }
-      ]
-    });
-  }
-
-  // 获取趋势数据并更新折线图
-  try {
-    const trendRes = await axios.get('/api/talk-records/trend', { params: { days: 7 } });
-    const trend = trendRes.data || trendRes;
-    if (lineChartInstance) {
-      lineChartInstance.setOption({
-        xAxis: { data: trend.dates || [] },
-        series: [
-          { data: trend.talks || [] },
-          { data: trend.homeVisits || [] }
-        ]
-      });
-    }
-  } catch (e) {
-    message.error('获取趋势数据失败');
-  }
-
-};
-
 const fetchData = async () => {
   try {
     const res = await axios.get('/api/organization/dashboard');
@@ -455,7 +245,6 @@ const fetchData = async () => {
     Object.assign(summary, body.summary || {});
     departments.value = body.departments || [];
     allUsers.value = body.userList || [];
-    await updateCharts();
   } catch (error) {
     message.error('获取全局数据失败');
   } finally {
@@ -486,15 +275,8 @@ const goToUserDetail = (jobNo) => {
   });
 };
 
-const handleResize = () => {
-  lineChartInstance?.resize();
-  deptCompareChartInstance?.resize();
-};
-
 onMounted(() => {
-  initCharts();
   fetchData();
-  window.addEventListener('resize', handleResize);
 
   nextTick(() => {
     gsap.from('.stat-card', {
@@ -505,21 +287,7 @@ onMounted(() => {
       ease: 'power2.out',
       delay: 0.2
     });
-    gsap.from('.chart-card', {
-      opacity: 0,
-      y: 40,
-      duration: 0.6,
-      stagger: 0.1,
-      ease: 'power2.out',
-      delay: 0.6
-    });
   });
-});
-
-onUnmounted(() => {
-  window.removeEventListener('resize', handleResize);
-  lineChartInstance?.dispose();
-  deptCompareChartInstance?.dispose();
 });
 </script>
 
@@ -688,43 +456,6 @@ onUnmounted(() => {
   margin-top: 4px;
 }
 
-/* 图表网格 */
-.charts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-  gap: 20px;
-  margin-bottom: 24px;
-}
-
-.chart-card {
-  background: var(--bg-card);
-  border-radius: var(--radius-lg);
-  padding: 20px;
-  border: 1px solid var(--border-color);
-}
-
-.chart-header {
-  margin-bottom: 16px;
-}
-
-.chart-title {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-title);
-}
-
-.chart-container {
-  height: 250px;
-}
-
-.wide-card {
-  grid-column: span 2;
-}
-
-.wide-card .chart-container {
-  height: 280px;
-}
-
 /* 表格卡片 */
 .table-card {
   background: var(--bg-card);
@@ -770,14 +501,6 @@ onUnmounted(() => {
   .top-bar {
     flex-direction: column;
     gap: 16px;
-  }
-
-  .charts-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .wide-card {
-    grid-column: span 1;
   }
 
   .stats-grid {
