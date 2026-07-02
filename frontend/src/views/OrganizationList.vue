@@ -219,7 +219,7 @@ onUnmounted(() => {
 <style scoped>
 .org-list-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #001529 0%, #0a1628 50%, #001529 100%);
+  background: var(--bg-page);
   padding: 20px;
   /* font-family inherited from global */
 }
@@ -230,11 +230,11 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  background: linear-gradient(90deg, rgba(0, 212, 255, 0.1), transparent);
+  background: var(--bg-card);
   border-radius: 12px;
-  border: 1px solid rgba(0, 212, 255, 0.3);
+  border: 1px solid var(--border-color);
   margin-bottom: 24px;
-  box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
 
 .title-section {
@@ -245,15 +245,12 @@ onUnmounted(() => {
 .main-title {
   font-size: 24px;
   font-weight: 700;
-  background: linear-gradient(90deg, #00d4ff, #00ffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--text-title);
 }
 
 .sub-title {
   font-size: 14px;
-  color: #8892b0;
+  color: var(--text-muted);
   margin-top: 4px;
 }
 
@@ -270,13 +267,13 @@ onUnmounted(() => {
 
 .time-display .date {
   font-size: 12px;
-  color: #8892b0;
+  color: var(--text-muted);
 }
 
 .time-display .time {
   font-size: 20px;
   font-weight: 600;
-  color: #00d4ff;
+  color: var(--accent);
   font-family: var(--font-mono);
 }
 
@@ -291,8 +288,8 @@ onUnmounted(() => {
 .left-panel {
   width: 280px;
   min-width: 280px;
-  background: rgba(0, 21, 41, 0.8);
-  border: 1px solid rgba(0, 212, 255, 0.2);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -301,7 +298,7 @@ onUnmounted(() => {
 
 .left-panel .panel-header {
   padding: 16px 20px 12px;
-  border-bottom: 1px solid rgba(73, 86, 112, 0.2);
+  border-bottom: 1px solid var(--border-light);
   display: flex;
   justify-content: space-between;
   align-items: baseline;
@@ -309,7 +306,7 @@ onUnmounted(() => {
 
 .dept-search {
   padding: 12px 16px;
-  border-bottom: 1px solid rgba(73, 86, 112, 0.15);
+  border-bottom: 1px solid var(--border-light);
 }
 
 
@@ -323,7 +320,7 @@ onUnmounted(() => {
   width: 6px;
 }
 .dept-list::-webkit-scrollbar-thumb {
-  background: rgba(0, 212, 255, 0.3);
+  background: var(--border-color);
   border-radius: 3px;
 }
 .dept-list::-webkit-scrollbar-track {
@@ -341,12 +338,12 @@ onUnmounted(() => {
 }
 
 .dept-item:hover {
-  background: rgba(0, 212, 255, 0.08);
+  background: var(--accent-light);
 }
 
 .dept-item.active {
-  background: rgba(0, 212, 255, 0.12);
-  border-left-color: #00d4ff;
+  background: var(--accent-light);
+  border-left-color: var(--accent);
 }
 
 .dept-item .dept-icon {
@@ -362,7 +359,7 @@ onUnmounted(() => {
 }
 
 .dept-item .dept-name {
-  color: #ccd6f6;
+  color: var(--text-primary);
   font-size: 14px;
   font-weight: 500;
   white-space: nowrap;
@@ -371,25 +368,25 @@ onUnmounted(() => {
 }
 
 .dept-item .dept-count {
-  color: #5a6a8a;
+  color: var(--text-muted);
   font-size: 12px;
 }
 
 .dept-item .dept-arrow {
-  color: #4a5568;
+  color: var(--text-muted);
   font-size: 18px;
   transition: color 0.2s;
 }
 
 .dept-item.active .dept-arrow {
-  color: #00d4ff;
+  color: var(--accent);
 }
 
 /* 右面板 */
 .right-panel {
   flex: 1;
-  background: rgba(0, 21, 41, 0.8);
-  border: 1px solid rgba(0, 212, 255, 0.2);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   display: flex;
   flex-direction: column;
@@ -398,7 +395,7 @@ onUnmounted(() => {
 
 .right-panel .panel-header {
   padding: 16px 24px 12px;
-  border-bottom: 1px solid rgba(73, 86, 112, 0.2);
+  border-bottom: 1px solid var(--border-light);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -415,12 +412,12 @@ onUnmounted(() => {
 .panel-title {
   font-size: 18px;
   font-weight: 600;
-  color: #ccd6f6;
+  color: var(--text-title);
 }
 
 .panel-subtitle {
   font-size: 13px;
-  color: #5a6a8a;
+  color: var(--text-muted);
 }
 
 .user-search {
@@ -437,7 +434,7 @@ onUnmounted(() => {
   width: 6px;
 }
 .user-content::-webkit-scrollbar-thumb {
-  background: rgba(0, 212, 255, 0.3);
+  background: var(--border-color);
   border-radius: 3px;
 }
 .user-content::-webkit-scrollbar-track {
@@ -452,7 +449,7 @@ onUnmounted(() => {
   justify-content: center;
   gap: 12px;
   padding: 80px 0;
-  color: #5a6a8a;
+  color: var(--text-muted);
   font-size: 15px;
 }
 
@@ -470,8 +467,8 @@ onUnmounted(() => {
 
 /* 单张人员卡片 */
 .user-card {
-  background: rgba(8, 22, 40, 0.9);
-  border: 1px solid rgba(0, 212, 255, 0.12);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
   cursor: pointer;
   transition: all 0.25s;
@@ -486,18 +483,18 @@ onUnmounted(() => {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, #00d4ff, transparent);
+  background: linear-gradient(90deg, var(--accent), transparent);
 }
 
 .user-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(0, 212, 255, 0.35);
-  box-shadow: 0 8px 24px rgba(0, 212, 255, 0.15);
+  border-color: var(--accent);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
 .user-card:hover .card-accent {
   height: 3px;
-  background: linear-gradient(90deg, #00d4ff, #00ffff, transparent);
+  background: linear-gradient(90deg, var(--accent), var(--accent-light), transparent);
 }
 
 .user-card.key-personnel-card {
@@ -520,7 +517,7 @@ onUnmounted(() => {
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
-  border: 2px solid rgba(0, 212, 255, 0.3);
+  border: 2px solid var(--border-color);
 }
 
 .card-avatar img {
@@ -535,8 +532,8 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 212, 255, 0.15);
-  color: #00d4ff;
+  background: var(--accent-light);
+  color: var(--accent);
   font-size: 20px;
   font-weight: 700;
 }
@@ -547,7 +544,7 @@ onUnmounted(() => {
 }
 
 .card-name {
-  color: #fff;
+  color: var(--text-title);
   font-size: 16px;
   font-weight: 600;
   white-space: nowrap;
@@ -556,19 +553,19 @@ onUnmounted(() => {
 }
 
 .card-jobno {
-  color: #8892b0;
+  color: var(--text-secondary);
   font-size: 12px;
   margin-top: 2px;
 }
 
 .card-position {
-  color: #a8b2d1;
+  color: var(--text-secondary);
   font-size: 13px;
   margin-top: 2px;
 }
 
 .card-phone {
-  color: #6a7a9a;
+  color: var(--text-muted);
   font-size: 12px;
   margin-top: 2px;
 }

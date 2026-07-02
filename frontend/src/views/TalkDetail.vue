@@ -119,8 +119,8 @@ onMounted(() => {
   max-width: 1000px;
   margin: 0 auto;
   position: relative;
-  background: rgba(0, 21, 41, 0.85);
-  border: 1px solid rgba(0, 212, 255, 0.2);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
 }
 
@@ -131,7 +131,7 @@ onMounted(() => {
   left: 20px;
   right: 20px;
   height: 1px;
-  background: linear-gradient(90deg, #00d4ff, #00ffff);
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
 }
 
 .header-content {
@@ -143,7 +143,7 @@ onMounted(() => {
   margin-left: 16px;
   font-size: 20px;
   font-weight: bold;
-  color: #fff;
+  color: var(--text-title);
 }
 
 .detail-full-content {
@@ -167,14 +167,14 @@ onMounted(() => {
 }
 
 .info-label {
-  color: #8892b0;
+  color: var(--text-muted);
   font-size: 14px;
   width: 90px;
   flex-shrink: 0;
 }
 
 .info-value {
-  color: #ccd6f6;
+  color: var(--text-primary);
   font-size: 16px;
   font-weight: 500;
 }
@@ -184,18 +184,18 @@ onMounted(() => {
   font-weight: 600;
   margin-bottom: 16px;
   padding-left: 10px;
-  border-left: 4px solid #00d4ff;
-  color: #fff;
+  border-left: 4px solid var(--accent);
+  color: var(--text-title);
 }
 
 .content-box {
-  background-color: rgba(0, 21, 41, 0.6);
+  background-color: var(--bg-page);
   padding: 24px;
   border-radius: 8px;
-  border: 1px solid rgba(0, 212, 255, 0.1);
+  border: 1px solid var(--border-light);
   font-size: 15px;
   line-height: 1.8;
-  color: #ccd6f6;
+  color: var(--text-primary);
   white-space: pre-wrap;
   min-height: 200px;
 }
@@ -208,12 +208,11 @@ onMounted(() => {
 .detail-photo {
   max-width: 100%;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px var(--shadow, rgba(0, 0, 0, 0.1));
   transition: transform 0.3s;
 }
 
 .detail-photo:hover {
   transform: scale(1.02);
 }
-
 </style>

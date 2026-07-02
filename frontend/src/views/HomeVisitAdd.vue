@@ -313,10 +313,10 @@ onMounted(initInfo);
 .home-visit-add-card {
   max-width: 900px;
   margin: 0 auto;
-  background: rgba(0, 21, 41, 0.85);
-  border: 1px solid rgba(0, 212, 255, 0.2);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
 
 
@@ -329,7 +329,7 @@ onMounted(initInfo);
   margin-left: 16px;
   font-size: 20px;
   font-weight: bold;
-  color: #fff;
+  color: var(--text-title);
 }
 
 .home-visit-form {
@@ -340,7 +340,7 @@ onMounted(initInfo);
 .form-footer {
   margin-top: 32px;
   text-align: center;
-  border-top: 1px solid rgba(0, 212, 255, 0.15);
+  border-top: 1px solid var(--border-light);
   padding-top: 24px;
 }
 

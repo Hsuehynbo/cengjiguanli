@@ -34,7 +34,7 @@
           </div>
           <div class="card-value"><NumberCounter :value="summary.homeVisitCount" /></div>
           <div class="card-trend">
-            <Icon icon="ri:target-fill" width="14" height="14" style="color: #00d4ff" />
+            <Icon icon="ri:target-fill" width="14" height="14" style="color: var(--accent)" />
             <span>本月累计</span>
           </div>
         </div>
@@ -85,7 +85,7 @@
           </div>
           <div class="card-value"><NumberCounter :value="summary.pendingTasks" /></div>
           <div class="card-trend">
-            <Icon icon="ri:time-fill" width="14" height="14" style="color: #8892b0" />
+            <Icon icon="ri:time-fill" width="14" height="14" style="color: var(--text-muted)" />
             <span>今日需处理</span>
           </div>
           <div class="card-click-hint">点击查看详情</div>
@@ -278,13 +278,13 @@ const initCharts = () => {
   lineChartInstance.setOption({
     tooltip: {
       trigger: 'axis',
-      backgroundColor: 'rgba(0, 21, 41, 0.9)',
-      borderColor: '#00d4ff',
-      textStyle: { color: '#fff' }
+      backgroundColor: 'rgba(30, 41, 59, 0.95)',
+      borderColor: '#3b82f6',
+      textStyle: { color: '#f1f5f9' }
     },
     legend: {
       data: ['谈话记录', '家访记录'],
-      textStyle: { color: '#8892b0' }
+      textStyle: { color: '#94a3b8' }
     },
     grid: {
       left: '3%',
@@ -296,14 +296,14 @@ const initCharts = () => {
       type: 'category',
       boundaryGap: false,
       data: [],
-      axisLine: { lineStyle: { color: '#495670' } },
-      axisLabel: { color: '#8892b0' }
+      axisLine: { lineStyle: { color: '#cbd5e1' } },
+      axisLabel: { color: '#94a3b8' }
     },
     yAxis: {
       type: 'value',
-      axisLine: { lineStyle: { color: '#495670' } },
-      axisLabel: { color: '#8892b0' },
-      splitLine: { lineStyle: { color: '#2a3f5f' } }
+      axisLine: { lineStyle: { color: '#cbd5e1' } },
+      axisLabel: { color: '#94a3b8' },
+      splitLine: { lineStyle: { color: '#e2e8f0' } }
     },
     series: [
       {
@@ -311,16 +311,16 @@ const initCharts = () => {
         type: 'line',
         smooth: true,
         data: [],
-        lineStyle: { color: '#00d4ff', width: 3 },
+        lineStyle: { color: '#2563eb', width: 3 },
         areaStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: 'rgba(0, 212, 255, 0.3)' },
-            { offset: 1, color: 'rgba(0, 212, 255, 0.05)' }
+            { offset: 0, color: 'rgba(37, 99, 235, 0.3)' },
+            { offset: 1, color: 'rgba(37, 99, 235, 0.05)' }
           ])
         },
         symbol: 'circle',
         symbolSize: 8,
-        itemStyle: { color: '#00d4ff' }
+        itemStyle: { color: '#2563eb' }
       },
       {
         name: '家访记录',
@@ -346,9 +346,9 @@ const initCharts = () => {
   deptCompareChartInstance.setOption({
     tooltip: {
       trigger: 'axis',
-      backgroundColor: 'rgba(0, 21, 41, 0.9)',
-      borderColor: '#00d4ff',
-      textStyle: { color: '#fff' },
+      backgroundColor: 'rgba(30, 41, 59, 0.95)',
+      borderColor: '#3b82f6',
+      textStyle: { color: '#f1f5f9' },
       formatter: (params) => {
         let tip = params[0].name + '<br/>';
         params.forEach(p => {
@@ -359,7 +359,7 @@ const initCharts = () => {
     },
     legend: {
       data: ['谈话完成率', '家访完成率'],
-      textStyle: { color: '#8892b0' }
+      textStyle: { color: '#94a3b8' }
     },
     grid: {
       left: '3%',
@@ -370,15 +370,15 @@ const initCharts = () => {
     xAxis: {
       type: 'category',
       data: [],
-      axisLine: { lineStyle: { color: '#495670' } },
-      axisLabel: { color: '#8892b0', rotate: 30 }
+      axisLine: { lineStyle: { color: '#cbd5e1' } },
+      axisLabel: { color: '#94a3b8', rotate: 30 }
     },
     yAxis: {
       type: 'value',
       max: 100,
-      axisLine: { lineStyle: { color: '#495670' } },
-      axisLabel: { color: '#8892b0', formatter: '{value}%' },
-      splitLine: { lineStyle: { color: '#2a3f5f' } }
+      axisLine: { lineStyle: { color: '#cbd5e1' } },
+      axisLabel: { color: '#94a3b8', formatter: '{value}%' },
+      splitLine: { lineStyle: { color: '#e2e8f0' } }
     },
     series: [
       {
@@ -388,8 +388,8 @@ const initCharts = () => {
         data: [],
         itemStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: '#00d4ff' },
-            { offset: 1, color: '#0099cc' }
+            { offset: 0, color: '#2563eb' },
+            { offset: 1, color: '#1d4ed8' }
           ]),
           borderRadius: [4, 4, 0, 0]
         }
@@ -526,7 +526,7 @@ onUnmounted(() => {
 <style scoped>
 .dashboard-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #001529 0%, #0a1628 50%, #001529 100%);
+  background: transparent;
   padding: 20px;
 }
 
@@ -536,11 +536,9 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  background: rgba(0, 21, 41, 0.5);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 14px;
-  border: 1px solid rgba(0, 212, 255, 0.1);
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
   margin-bottom: 24px;
 }
 
@@ -552,39 +550,13 @@ onUnmounted(() => {
 .main-title {
   font-size: 24px;
   font-weight: 700;
-  background: linear-gradient(90deg, #00d4ff, #00ffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--accent);
 }
 
 .sub-title {
   font-size: 14px;
-  color: #8892b0;
+  color: var(--text-muted);
   margin-top: 4px;
-}
-
-.info-section {
-  display: flex;
-  gap: 32px;
-}
-
-.time-display {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-}
-
-.time-display .date {
-  font-size: 12px;
-  color: #8892b0;
-}
-
-.time-display .time {
-  font-size: 20px;
-  font-weight: 600;
-  color: #00d4ff;
-  font-family: var(--font-mono);
 }
 
 /* 数据卡片网格 */
@@ -596,46 +568,19 @@ onUnmounted(() => {
 }
 
 .stat-card {
-  background: rgba(0, 21, 41, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-radius: 14px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
   padding: 20px;
-  border: 1px solid rgba(0, 212, 255, 0.12);
+  border: 1px solid var(--border-color);
   transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
 }
 
-.stat-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #00d4ff, transparent);
-  opacity: 0.6;
-}
-
-.stat-card::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 50% 0%, rgba(0, 212, 255, 0.06) 0%, transparent 60%);
-  opacity: 0;
-  transition: opacity 0.35s;
-  pointer-events: none;
-}
-
 .stat-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(0, 212, 255, 0.35);
-  box-shadow: 0 4px 24px rgba(0, 212, 255, 0.12), 0 0 40px rgba(0, 212, 255, 0.06);
-}
-
-.stat-card:hover::after {
-  opacity: 1;
+  border-color: var(--accent);
+  box-shadow: 0 4px 24px var(--accent-shadow);
 }
 
 .card-header {
@@ -648,7 +593,7 @@ onUnmounted(() => {
 .card-icon-wrap {
   width: 36px;
   height: 36px;
-  border-radius: 10px;
+  border-radius: var(--radius-md);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -656,44 +601,39 @@ onUnmounted(() => {
 }
 
 .card-icon-wrap.cyan {
-  background: rgba(0, 212, 255, 0.12);
-  color: #00d4ff;
-  box-shadow: 0 0 12px rgba(0, 212, 255, 0.15);
+  background: var(--accent-light);
+  color: var(--accent);
 }
 
 .card-icon-wrap.red {
-  background: rgba(239, 68, 68, 0.12);
-  color: #ef4444;
-  box-shadow: 0 0 12px rgba(239, 68, 68, 0.15);
+  background: var(--danger-light);
+  color: var(--danger);
 }
 
 .card-icon-wrap.orange {
-  background: rgba(245, 158, 11, 0.12);
-  color: #f59e0b;
-  box-shadow: 0 0 12px rgba(245, 158, 11, 0.15);
+  background: var(--warning-light);
+  color: var(--warning);
 }
 
 .card-icon-wrap.green {
-  background: rgba(16, 185, 129, 0.12);
-  color: #10b981;
-  box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
+  background: var(--success-light);
+  color: var(--success);
 }
 
 .card-icon-wrap.purple {
-  background: rgba(124, 58, 237, 0.12);
-  color: #7c3aed;
-  box-shadow: 0 0 12px rgba(124, 58, 237, 0.15);
+  background: var(--purple-light);
+  color: var(--purple);
 }
 
 .card-label {
   font-size: 13px;
-  color: #8892b0;
+  color: var(--text-muted);
 }
 
 .card-value {
   font-size: 32px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-title);
   margin-bottom: 12px;
   line-height: 1;
 }
@@ -703,39 +643,23 @@ onUnmounted(() => {
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: #8892b0;
+  color: var(--text-muted);
 }
 
 .key-card {
-  border-color: rgba(239, 68, 68, 0.4);
-}
-
-.key-card::before {
-  background: linear-gradient(90deg, transparent, #ef4444, transparent);
+  border-color: var(--danger);
 }
 
 .warning-card {
-  border-color: rgba(245, 158, 11, 0.4);
-}
-
-.warning-card::before {
-  background: linear-gradient(90deg, transparent, #f59e0b, transparent);
+  border-color: var(--warning);
 }
 
 .success-card {
-  border-color: rgba(16, 185, 129, 0.4);
-}
-
-.success-card::before {
-  background: linear-gradient(90deg, transparent, #10b981, transparent);
+  border-color: var(--success);
 }
 
 .activity-card {
-  border-color: rgba(99, 102, 241, 0.4);
-}
-
-.activity-card::before {
-  background: linear-gradient(90deg, transparent, #6366f1, transparent);
+  border-color: var(--purple);
 }
 
 .highlight-red { color: #ef4444; }
@@ -748,12 +672,12 @@ onUnmounted(() => {
 
 .clickable-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 212, 255, 0.3);
+  box-shadow: 0 4px 24px var(--accent-shadow);
 }
 
 .card-click-hint {
   font-size: 11px;
-  color: #64ffda;
+  color: var(--accent);
   opacity: 0.7;
   margin-top: 4px;
 }
@@ -767,10 +691,10 @@ onUnmounted(() => {
 }
 
 .chart-card {
-  background: rgba(0, 21, 41, 0.8);
-  border-radius: 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
   padding: 20px;
-  border: 1px solid rgba(0, 212, 255, 0.2);
+  border: 1px solid var(--border-color);
 }
 
 .chart-header {
@@ -780,7 +704,7 @@ onUnmounted(() => {
 .chart-title {
   font-size: 14px;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-title);
 }
 
 .chart-container {
@@ -797,10 +721,10 @@ onUnmounted(() => {
 
 /* 表格卡片 */
 .table-card {
-  background: #081628;
-  border-radius: 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
   padding: 24px;
-  border: none;
+  border: 1px solid var(--border-color);
 }
 
 .table-header {
@@ -810,7 +734,7 @@ onUnmounted(() => {
 .table-title {
   font-size: 16px;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-title);
 }
 
 .custom-table {
@@ -830,7 +754,7 @@ onUnmounted(() => {
 
 .progress-text {
   font-size: 12px;
-  color: #8892b0;
+  color: var(--text-muted);
   min-width: 40px;
 }
 
@@ -840,16 +764,6 @@ onUnmounted(() => {
   .top-bar {
     flex-direction: column;
     gap: 16px;
-  }
-
-  .info-section {
-    flex-direction: column;
-    align-items: center;
-    gap: 16px;
-  }
-
-  .time-display {
-    align-items: center;
   }
 
   .charts-grid {

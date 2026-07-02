@@ -317,8 +317,8 @@ onMounted(() => {
   max-width: 800px;
   margin: 0 auto;
   position: relative;
-  background: rgba(0, 21, 41, 0.85);
-  border: 1px solid rgba(0, 212, 255, 0.2);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
 }
 
@@ -329,7 +329,7 @@ onMounted(() => {
   left: 20px;
   right: 20px;
   height: 1px;
-  background: linear-gradient(90deg, #00d4ff, #00ffff);
+  background: linear-gradient(90deg, var(--accent), var(--accent-light));
 }
 
 .header-content {
@@ -341,7 +341,7 @@ onMounted(() => {
   margin-left: 16px;
   font-size: 18px;
   font-weight: bold;
-  color: #fff;
+  color: var(--text-title);
 }
 
 .talk-form {

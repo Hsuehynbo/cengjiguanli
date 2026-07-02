@@ -671,9 +671,7 @@ onUnmounted(() => {
 <style scoped>
 .org-chart-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #001529 0%, #0a1628 50%, #001529 100%);
   padding: 20px;
-  /* font-family inherited from global */
 }
 
 /* 顶部信息栏 */
@@ -682,11 +680,10 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  background: linear-gradient(90deg, rgba(0, 212, 255, 0.1), transparent);
-  border-radius: 12px;
-  border: 1px solid rgba(0, 212, 255, 0.3);
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
   margin-bottom: 24px;
-  box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
 }
 
 .title-section {
@@ -697,15 +694,12 @@ onUnmounted(() => {
 .main-title {
   font-size: 24px;
   font-weight: 700;
-  background: linear-gradient(90deg, #00d4ff, #00ffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--accent);
 }
 
 .sub-title {
   font-size: 14px;
-  color: #8892b0;
+  color: var(--text-muted);
   margin-top: 4px;
 }
 
@@ -722,13 +716,13 @@ onUnmounted(() => {
 
 .time-display .date {
   font-size: 12px;
-  color: #8892b0;
+  color: var(--text-muted);
 }
 
 .time-display .time {
   font-size: 20px;
   font-weight: 600;
-  color: #00d4ff;
+  color: var(--accent);
   font-family: var(--font-mono);
 }
 
@@ -741,29 +735,17 @@ onUnmounted(() => {
 }
 
 .stat-card {
-  background: rgba(0, 21, 41, 0.8);
-  border-radius: 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
   padding: 20px;
-  border: 1px solid rgba(0, 212, 255, 0.2);
+  border: 1px solid var(--border-color);
   transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-}
-
-.stat-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #00d4ff, transparent);
 }
 
 .stat-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(0, 212, 255, 0.5);
-  box-shadow: 0 8px 30px rgba(0, 212, 255, 0.2);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-lg), 0 0 0 1px var(--accent-shadow);
 }
 
 .card-header {
@@ -779,42 +761,30 @@ onUnmounted(() => {
 
 .card-label {
   font-size: 13px;
-  color: #8892b0;
+  color: var(--text-muted);
 }
 
 .card-value {
   font-size: 36px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-title);
 }
 
 .key-card {
-  border-color: rgba(239, 68, 68, 0.4);
-}
-
-.key-card::before {
-  background: linear-gradient(90deg, transparent, #ef4444, transparent);
+  border-color: var(--danger);
 }
 
 .warning-card {
-  border-color: rgba(245, 158, 11, 0.4);
-}
-
-.warning-card::before {
-  background: linear-gradient(90deg, transparent, #f59e0b, transparent);
+  border-color: var(--warning);
 }
 
 .success-card {
-  border-color: rgba(16, 185, 129, 0.4);
+  border-color: var(--success);
 }
 
-.success-card::before {
-  background: linear-gradient(90deg, transparent, #10b981, transparent);
-}
-
-.highlight-red { color: #ef4444; }
-.highlight-orange { color: #f59e0b; }
-.highlight-green { color: #10b981; }
+.highlight-red { color: var(--danger); }
+.highlight-orange { color: var(--warning); }
+.highlight-green { color: var(--success); }
 
 .clickable-card {
   cursor: pointer;
@@ -822,22 +792,22 @@ onUnmounted(() => {
 
 .clickable-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 212, 255, 0.3);
+  box-shadow: var(--shadow-lg), 0 0 20px var(--accent-shadow);
 }
 
 .card-click-hint {
   font-size: 11px;
-  color: #64ffda;
+  color: var(--accent);
   opacity: 0.7;
   margin-top: 4px;
 }
 
 /* 图表卡片 */
 .chart-card {
-  background: rgba(0, 21, 41, 0.8);
-  border-radius: 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
   padding: 20px;
-  border: 1px solid rgba(0, 212, 255, 0.2);
+  border: 1px solid var(--border-color);
 }
 
 .chart-header {
@@ -852,7 +822,7 @@ onUnmounted(() => {
 .chart-title {
   font-size: 16px;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-title);
 }
 
 .chart-actions {
@@ -864,14 +834,14 @@ onUnmounted(() => {
 
 .toolbar-input {
   width: 260px;
-  background: rgba(0, 21, 41, 0.8);
-  border-color: rgba(0, 212, 255, 0.3);
+  background: var(--bg-input);
+  border-color: var(--border-color);
 }
 
 .toolbar-select {
   width: 220px;
-  background: rgba(0, 21, 41, 0.8);
-  border-color: rgba(0, 212, 255, 0.3);
+  background: var(--bg-input);
+  border-color: var(--border-color);
 }
 
 .chart-toolbar {
@@ -880,7 +850,7 @@ onUnmounted(() => {
   gap: 12px;
   flex-wrap: wrap;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(73, 86, 112, 0.3);
+  border-bottom: 1px solid var(--border-light);
   margin-bottom: 16px;
 }
 
@@ -894,7 +864,7 @@ onUnmounted(() => {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #8892b0;
+  color: var(--text-secondary);
 }
 
 .legend-dot {
@@ -902,38 +872,38 @@ onUnmounted(() => {
   height: 14px;
   border-radius: 50%;
   border: 2px solid transparent;
-  background: #fff;
+  background: var(--bg-card);
 }
 
 .legend-dot.normal {
-  border-color: #00d4ff;
+  border-color: var(--accent);
 }
 
 .legend-dot.key {
-  background: #fff1f0;
-  border-color: #ef4444;
+  background: var(--danger-light);
+  border-color: var(--danger);
 }
 
 .legend-dot.risk {
-  background: #fffbe6;
-  border-color: #f59e0b;
+  background: var(--warning-light);
+  border-color: var(--warning);
 }
 
 .legend-dot.attention {
-  background: #f6ffed;
-  border-color: #10b981;
+  background: var(--success-light);
+  border-color: var(--success);
 }
 
 .toolbar-tip {
-  color: #8892b0;
+  color: var(--text-muted);
   font-size: 12px;
 }
 
 .chart-wrapper {
   position: relative;
-  border: 1px solid rgba(0, 212, 255, 0.2);
-  border-radius: 12px;
-  background: rgba(0, 21, 41, 0.6);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  background: var(--bg-card);
   overflow: hidden;
 }
 
@@ -955,12 +925,12 @@ onUnmounted(() => {
 }
 
 .canvas-scroll-area::-webkit-scrollbar-thumb {
-  background: rgba(0, 212, 255, 0.4);
+  background: var(--border-color);
   border-radius: 4px;
 }
 
 .canvas-scroll-area::-webkit-scrollbar-track {
-  background: rgba(0, 21, 41, 0.6);
+  background: var(--bg-card);
   border-radius: 4px;
 }
 
@@ -978,23 +948,23 @@ onUnmounted(() => {
   position: absolute;
   z-index: 12;
   min-width: 180px;
-  background: rgba(0, 21, 41, 0.96);
-  border: 1px solid rgba(0, 212, 255, 0.3);
-  border-radius: 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
   padding: 12px;
-  box-shadow: 0 10px 24px rgba(0, 212, 255, 0.2);
+  box-shadow: var(--shadow-lg);
   pointer-events: none;
 }
 
 .tooltip-header {
   font-weight: 600;
   margin-bottom: 8px;
-  color: #00d4ff;
+  color: var(--accent);
 }
 
 .tooltip-body p {
   margin: 4px 0;
-  color: #ccd6f6;
+  color: var(--text-primary);
   font-size: 12px;
 }
 
@@ -1002,13 +972,12 @@ onUnmounted(() => {
   position: absolute;
   right: 16px;
   bottom: 16px;
-  border: 1px solid rgba(0, 212, 255, 0.3);
-  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  background: rgba(0, 21, 41, 0.9);
-  box-shadow: 0 8px 20px rgba(0, 212, 255, 0.2);
+  background: var(--bg-card);
+  box-shadow: var(--shadow-lg);
 }
-
 
 /* 响应式设计 */
 @media (max-width: 768px) {

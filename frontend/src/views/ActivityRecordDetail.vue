@@ -110,7 +110,7 @@ onMounted(fetchRecord);
 .page-title {
   font-size: 18px;
   font-weight: bold;
-  color: #fff;
+  color: var(--text-title);
 }
 .task-info {
   margin-bottom: 16px;
@@ -118,9 +118,9 @@ onMounted(fetchRecord);
 .section-title {
   font-size: 15px;
   font-weight: 600;
-  color: #ccd6f6;
+  color: var(--text-primary);
   margin-bottom: 12px;
-  border-left: 3px solid #00d4ff;
+  border-left: 3px solid var(--accent);
   padding-left: 8px;
 }
 </style>

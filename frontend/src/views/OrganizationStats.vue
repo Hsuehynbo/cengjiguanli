@@ -266,15 +266,15 @@ const initCharts = () => {
   pieChartInstance.setOption({
     tooltip: {
       trigger: 'item',
-      backgroundColor: 'rgba(0, 21, 41, 0.9)',
-      borderColor: '#00d4ff',
-      textStyle: { color: '#fff' }
+      backgroundColor: 'rgba(30, 41, 59, 0.95)',
+      borderColor: '#3b82f6',
+      textStyle: { color: '#f1f5f9' }
     },
     legend: {
       bottom: 10,
-      textStyle: { color: '#8892b0' }
+      textStyle: { color: '#94a3b8' }
     },
-    color: ['#10b981', '#00d4ff', '#f59e0b', '#ef4444'],
+    color: ['#10b981', '#2563eb', '#f59e0b', '#ef4444'],
     series: [{
       name: '风险分布',
       type: 'pie',
@@ -282,12 +282,12 @@ const initCharts = () => {
       avoidLabelOverlap: false,
       itemStyle: {
         borderRadius: 10,
-        borderColor: 'rgba(8, 22, 40, 0.8)',
+        borderColor: 'rgba(255,255,255,0.8)',
         borderWidth: 2
       },
       label: {
         show: true,
-        color: '#8892b0',
+        color: '#94a3b8',
         fontSize: 12
       },
       emphasis: {
@@ -295,7 +295,7 @@ const initCharts = () => {
           show: true,
           fontSize: 14,
           fontWeight: 'bold',
-          color: '#fff'
+          color: '#f1f5f9'
         }
       },
       data: [
@@ -312,13 +312,13 @@ const initCharts = () => {
   barChartInstance.setOption({
     tooltip: {
       trigger: 'axis',
-      backgroundColor: 'rgba(0, 21, 41, 0.9)',
-      borderColor: '#00d4ff',
-      textStyle: { color: '#fff' }
+      backgroundColor: 'rgba(30, 41, 59, 0.95)',
+      borderColor: '#3b82f6',
+      textStyle: { color: '#f1f5f9' }
     },
     legend: {
       data: ['谈话完成', '家访完成'],
-      textStyle: { color: '#8892b0' }
+      textStyle: { color: '#94a3b8' }
     },
     grid: {
       left: '3%',
@@ -329,14 +329,14 @@ const initCharts = () => {
     xAxis: {
       type: 'category',
       data: ['已完成', '未完成'],
-      axisLine: { lineStyle: { color: '#495670' } },
-      axisLabel: { color: '#8892b0' }
+      axisLine: { lineStyle: { color: '#cbd5e1' } },
+      axisLabel: { color: '#94a3b8' }
     },
     yAxis: {
       type: 'value',
-      axisLine: { lineStyle: { color: '#495670' } },
-      axisLabel: { color: '#8892b0' },
-      splitLine: { lineStyle: { color: '#2a3f5f' } }
+      axisLine: { lineStyle: { color: '#cbd5e1' } },
+      axisLabel: { color: '#94a3b8' },
+      splitLine: { lineStyle: { color: '#e2e8f0' } }
     },
     series: [
       {
@@ -346,8 +346,8 @@ const initCharts = () => {
         data: [stats.value.completed, stats.value.total - stats.value.completed],
         itemStyle: {
           color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
-            { offset: 0, color: '#00d4ff' },
-            { offset: 1, color: '#0099cc' }
+            { offset: 0, color: '#2563eb' },
+            { offset: 1, color: '#1d4ed8' }
           ]),
           borderRadius: [4, 4, 0, 0]
         }
@@ -442,9 +442,8 @@ onUnmounted(() => {
 <style scoped>
 .org-stats-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #001529 0%, #0a1628 50%, #001529 100%);
+  background: transparent;
   padding: 20px;
-  /* font-family inherited from global */
 }
 
 /* 顶部信息栏 */
@@ -453,11 +452,11 @@ onUnmounted(() => {
   justify-content: space-between;
   align-items: center;
   padding: 16px 24px;
-  background: linear-gradient(90deg, rgba(0, 212, 255, 0.1), transparent);
-  border-radius: 12px;
-  border: 1px solid rgba(0, 212, 255, 0.3);
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border-color);
   margin-bottom: 24px;
-  box-shadow: 0 0 30px rgba(0, 212, 255, 0.1);
+  box-shadow: var(--shadow-sm);
 }
 
 .title-section {
@@ -468,15 +467,12 @@ onUnmounted(() => {
 .main-title {
   font-size: 24px;
   font-weight: 700;
-  background: linear-gradient(90deg, #00d4ff, #00ffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--accent);
 }
 
 .sub-title {
   font-size: 14px;
-  color: #8892b0;
+  color: var(--text-muted);
   margin-top: 4px;
 }
 
@@ -494,13 +490,13 @@ onUnmounted(() => {
 
 .time-display .date {
   font-size: 12px;
-  color: #8892b0;
+  color: var(--text-muted);
 }
 
 .time-display .time {
   font-size: 20px;
   font-weight: 600;
-  color: #00d4ff;
+  color: var(--accent);
   font-family: var(--font-mono);
 }
 
@@ -513,29 +509,19 @@ onUnmounted(() => {
 }
 
 .stat-card {
-  background: rgba(0, 21, 41, 0.8);
-  border-radius: 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
   padding: 20px;
-  border: 1px solid rgba(0, 212, 255, 0.2);
+  border: 1px solid var(--border-color);
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
 }
 
-.stat-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #00d4ff, transparent);
-}
-
 .stat-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(0, 212, 255, 0.5);
-  box-shadow: 0 8px 30px rgba(0, 212, 255, 0.2);
+  border-color: var(--accent);
+  box-shadow: 0 8px 30px var(--accent-shadow);
 }
 
 .card-header {
@@ -551,13 +537,13 @@ onUnmounted(() => {
 
 .card-label {
   font-size: 13px;
-  color: #8892b0;
+  color: var(--text-muted);
 }
 
 .card-value {
   font-size: 36px;
   font-weight: 700;
-  color: #fff;
+  color: var(--text-title);
   margin-bottom: 8px;
 }
 
@@ -566,40 +552,16 @@ onUnmounted(() => {
   align-items: center;
   gap: 6px;
   font-size: 12px;
-  color: #64ffda;
+  color: var(--text-muted);
 }
 
 .trend-icon {
   font-size: 12px;
 }
 
-.key-card {
-  border-color: rgba(239, 68, 68, 0.4);
-}
-
-.key-card::before {
-  background: linear-gradient(90deg, transparent, #ef4444, transparent);
-}
-
-.warning-card {
-  border-color: rgba(245, 158, 11, 0.4);
-}
-
-.warning-card::before {
-  background: linear-gradient(90deg, transparent, #f59e0b, transparent);
-}
-
-.success-card {
-  border-color: rgba(16, 185, 129, 0.4);
-}
-
-.success-card::before {
-  background: linear-gradient(90deg, transparent, #10b981, transparent);
-}
-
-.highlight-red { color: #ef4444; }
-.highlight-orange { color: #f59e0b; }
-.highlight-green { color: #10b981; }
+.highlight-red { color: var(--danger); }
+.highlight-orange { color: var(--warning); }
+.highlight-green { color: var(--success); }
 
 .clickable-card {
   cursor: pointer;
@@ -607,12 +569,12 @@ onUnmounted(() => {
 
 .clickable-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 212, 255, 0.3);
+  box-shadow: 0 12px 40px var(--accent-shadow);
 }
 
 .card-click-hint {
   font-size: 11px;
-  color: #64ffda;
+  color: var(--accent);
   opacity: 0.7;
   margin-top: 4px;
 }
@@ -626,10 +588,10 @@ onUnmounted(() => {
 }
 
 .chart-card {
-  background: rgba(0, 21, 41, 0.8);
-  border-radius: 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
   padding: 20px;
-  border: 1px solid rgba(0, 212, 255, 0.2);
+  border: 1px solid var(--border-color);
 }
 
 .chart-header {
@@ -639,7 +601,7 @@ onUnmounted(() => {
 .chart-title {
   font-size: 14px;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-title);
 }
 
 .chart-container {
@@ -652,10 +614,10 @@ onUnmounted(() => {
 
 /* 表格卡片 */
 .table-card {
-  background: #081628;
-  border-radius: 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-lg);
   padding: 24px;
-  border: none;
+  border: 1px solid var(--border-color);
 }
 
 .table-header {
@@ -665,11 +627,11 @@ onUnmounted(() => {
 .table-title {
   font-size: 16px;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-title);
 }
 
 .custom-table {
-  background: #081628;
+  background: transparent;
 }
 
 /* 响应式设计 */

@@ -563,10 +563,10 @@ watch(() => route.query.jobNo, (newJobNo) => {
 }
 
 .detail-card {
-  background: rgba(0, 21, 41, 0.85);
-  border: 1px solid rgba(0, 212, 255, 0.2);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px var(--shadow, rgba(0, 0, 0, 0.1));
 }
 
 
@@ -579,7 +579,7 @@ watch(() => route.query.jobNo, (newJobNo) => {
   margin-left: 16px;
   font-size: 18px;
   font-weight: bold;
-  color: #fff;
+  color: var(--text-title);
 }
 
 .section-title {
@@ -587,8 +587,8 @@ watch(() => route.query.jobNo, (newJobNo) => {
   font-weight: bold;
   margin-bottom: 16px;
   padding-left: 8px;
-  border-left: 4px solid #00d4ff;
-  color: #fff;
+  border-left: 4px solid var(--accent);
+  color: var(--text-title);
 }
 
 .section-header {
@@ -601,7 +601,7 @@ watch(() => route.query.jobNo, (newJobNo) => {
 .pre-content {
   white-space: pre-wrap;
   word-break: break-all;
-  color: #ccd6f6;
+  color: var(--text-primary);
 }
 
 

@@ -983,17 +983,17 @@ onMounted(() => {
   height: 100%;
   display: flex;
   flex-direction: column;
-  background: rgba(0, 21, 41, 0.85);
-  border: 1px solid rgba(0, 212, 255, 0.2);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
 }
 
 
 .header-toolbar {
   margin-bottom: 16px;
   padding-bottom: 12px;
-  border-bottom: 1px solid rgba(0, 212, 255, 0.15);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .toolbar-row {
@@ -1009,7 +1009,7 @@ onMounted(() => {
 .page-title {
   font-size: 16px;
   font-weight: bold;
-  color: #fff;
+  color: var(--text-title);
   flex-shrink: 0;
 }
 
@@ -1018,19 +1018,6 @@ onMounted(() => {
   overflow-y: auto;
   max-height: calc(100vh - 250px);
 }
-
-/* 自定义滚动条 */
-.tree-wrapper::-webkit-scrollbar {
-  width: 6px;
-}
-.tree-wrapper::-webkit-scrollbar-thumb {
-  background: rgba(0, 212, 255, 0.3);
-  border-radius: 3px;
-}
-.tree-wrapper::-webkit-scrollbar-track {
-  background: rgba(0, 21, 41, 0.4);
-}
-
 
 .node-title-wrapper {
   display: flex;
@@ -1045,12 +1032,12 @@ onMounted(() => {
 }
 
 .user-node-hover:hover {
-  background-color: rgba(0, 212, 255, 0.08) !important;
+  background-color: var(--accent-light) !important;
   cursor: pointer;
 }
 
 .dept-node-hover:hover {
-  background-color: rgba(0, 212, 255, 0.05) !important;
+  background-color: var(--accent-light) !important;
   cursor: pointer;
 }
 
@@ -1061,21 +1048,21 @@ onMounted(() => {
 
 .company-title {
   font-weight: bold;
-  color: #fff;
+  color: var(--text-title);
   font-size: 15px;
 }
 
 .dept-title {
   font-weight: bold;
-  color: #ccd6f6;
+  color: var(--text-primary);
 }
 
 .position-title {
-  color: #ccd6f6;
+  color: var(--text-primary);
 }
 
 .user-name {
-  color: #ccd6f6;
+  color: var(--text-primary);
   font-weight: 500;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1083,19 +1070,19 @@ onMounted(() => {
 }
 
 .user-position-label {
-  color: #8892b0;
+  color: var(--text-muted);
   font-weight: normal;
   margin-left: 4px;
 }
 
 .user-job-no {
-  color: #6a7593;
+  color: var(--text-muted);
   margin-left: 8px;
   font-size: 12px;
 }
 
 .node-count {
-  color: #6a7593;
+  color: var(--text-muted);
   font-size: 12px;
   margin-left: 8px;
 }
@@ -1108,16 +1095,16 @@ onMounted(() => {
 }
 
 .user-node-content.key-personnel {
-  color: #ff4d4f;
+  color: var(--danger);
   font-weight: bold;
 }
 
 .user-node-content.key-personnel .user-name {
-  color: #ff4d4f;
+  color: var(--danger);
 }
 
 .user-node-content.key-personnel .user-job-no {
-  color: #ff7875;
+  color: var(--danger);
 }
 
 .add-talk-btn {
@@ -1126,8 +1113,8 @@ onMounted(() => {
 }
 
 .highlight {
-  background-color: rgba(0, 212, 255, 0.3);
-  color: #fff;
+  background-color: var(--accent-light);
+  color: var(--accent);
   padding: 0 2px;
   border-radius: 2px;
 }
@@ -1148,8 +1135,8 @@ onMounted(() => {
   font-size: 16px;
   font-weight: bold;
   margin-bottom: 16px;
-  color: #fff;
-  border-left: 4px solid #00d4ff;
+  color: var(--text-title);
+  border-left: 4px solid var(--accent);
   padding-left: 8px;
 }
 
@@ -1168,20 +1155,20 @@ onMounted(() => {
   padding: 80px 0;
 }
 
-/* Ant Design dark overrides */
+/* Ant Design overrides for card body/head */
 .tree-card :deep(.ant-card-body),
 .detail-card :deep(.ant-card-body) {
   background: transparent;
-  color: #ccd6f6;
+  color: var(--text-primary);
 }
 
 .detail-card :deep(.ant-card-head) {
   background: transparent;
-  border-bottom: 1px solid rgba(0, 212, 255, 0.15);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .detail-card :deep(.ant-card-head-title) {
-  color: #fff;
+  color: var(--text-title);
 }
 
 /* Tabs */
@@ -1190,118 +1177,118 @@ onMounted(() => {
 }
 
 .admin-content :deep(.ant-tabs-tab) {
-  color: #8892b0;
+  color: var(--text-muted);
 }
 
 .admin-content :deep(.ant-tabs-tab-active .ant-tabs-tab-btn) {
-  color: #00d4ff;
+  color: var(--accent);
 }
 
 .admin-content :deep(.ant-tabs-ink-bar) {
-  background: #00d4ff;
+  background: var(--accent);
 }
 
 .admin-content :deep(.ant-tabs-content-holder) {
-  color: #ccd6f6;
+  color: var(--text-primary);
 }
 
 /* Form labels */
 .admin-content :deep(.ant-form-item-label > label) {
-  color: #ccd6f6;
+  color: var(--text-primary);
 }
 
 /* Input fields */
 .admin-content :deep(.ant-input),
 .admin-content :deep(.ant-input-affix-wrapper),
 .admin-content :deep(.ant-input-password) {
-  background: rgba(0, 21, 41, 0.6);
-  border-color: rgba(0, 212, 255, 0.2);
-  color: #ccd6f6;
+  background: var(--bg-input);
+  border-color: var(--border-color);
+  color: var(--text-primary);
 }
 
 .admin-content :deep(.ant-input::placeholder) {
-  color: #5a6a8a;
+  color: var(--text-muted);
 }
 
 .admin-content :deep(.ant-input:hover),
 .admin-content :deep(.ant-input-affix-wrapper:hover) {
-  border-color: rgba(0, 212, 255, 0.35);
+  border-color: var(--accent-light);
 }
 
 .admin-content :deep(.ant-input:focus),
 .admin-content :deep(.ant-input-focused),
 .admin-content :deep(.ant-input-affix-wrapper:focus),
 .admin-content :deep(.ant-input-affix-wrapper-focused) {
-  border-color: #00d4ff;
-  box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-shadow);
 }
 
 /* Select */
 .admin-content :deep(.ant-select-selector) {
-  background: rgba(0, 21, 41, 0.6) !important;
-  border-color: rgba(0, 212, 255, 0.2) !important;
-  color: #ccd6f6 !important;
+  background: var(--bg-input) !important;
+  border-color: var(--border-color) !important;
+  color: var(--text-primary) !important;
 }
 
 .admin-content :deep(.ant-select-selection-item) {
-  color: #ccd6f6;
+  color: var(--text-primary);
 }
 
 .admin-content :deep(.ant-select-selection-placeholder) {
-  color: #5a6a8a;
+  color: var(--text-muted);
 }
 
 .admin-content :deep(.ant-select-arrow) {
-  color: #5a6a8a;
+  color: var(--text-muted);
 }
 
 /* Table */
 .admin-content :deep(.ant-table) {
   background: transparent;
-  color: #ccd6f6;
+  color: var(--text-primary);
 }
 
 .admin-content :deep(.ant-table-thead > tr > th) {
-  background: rgba(0, 21, 41, 0.6);
-  color: #ccd6f6;
-  border-color: rgba(0, 212, 255, 0.15);
+  background: var(--bg-table-header);
+  color: var(--text-secondary);
+  border-color: var(--border-color);
 }
 
 .admin-content :deep(.ant-table-tbody > tr > td) {
-  border-color: rgba(0, 212, 255, 0.1);
-  color: #ccd6f6;
+  border-color: var(--border-light);
+  color: var(--text-primary);
 }
 
 .admin-content :deep(.ant-table-tbody > tr:hover > td) {
-  background: rgba(0, 212, 255, 0.08);
+  background: var(--bg-table-row-hover);
 }
 
 .admin-content :deep(.ant-table-wrapper .ant-table-container) {
-  border-color: rgba(0, 212, 255, 0.15);
+  border-color: var(--border-color);
 }
 
 /* Alert */
 .admin-content :deep(.ant-alert) {
-  background: rgba(0, 21, 41, 0.6);
-  border-color: rgba(0, 212, 255, 0.2);
+  background: var(--bg-input);
+  border-color: var(--border-color);
 }
 
 .admin-content :deep(.ant-alert-message) {
-  color: #ccd6f6;
+  color: var(--text-primary);
 }
 
 .admin-content :deep(.ant-alert-description) {
-  color: #8892b0;
+  color: var(--text-secondary);
 }
 
-/* Section title */
+/* Divider */
 .admin-content :deep(.ant-divider) {
-  border-color: rgba(0, 212, 255, 0.15);
+  border-color: var(--border-color);
 }
 
-/* Tree dark theme */
+/* Tree */
 .custom-tree :deep(.ant-tree-title) {
-  color: #ccd6f6;
+  color: var(--text-primary);
 }
 
 .custom-tree :deep(.ant-tree-node-content-wrapper) {
@@ -1309,37 +1296,37 @@ onMounted(() => {
 }
 
 .custom-tree :deep(.ant-tree-node-content-wrapper:hover) {
-  background: rgba(0, 212, 255, 0.08);
+  background: var(--accent-light);
 }
 
 .custom-tree :deep(.ant-tree-node-selected .ant-tree-node-content-wrapper) {
-  background: rgba(0, 212, 255, 0.15);
+  background: var(--accent-light);
 }
 
 .custom-tree :deep(.ant-tree-switcher) {
-  color: #5a6a8a;
+  color: var(--text-muted);
 }
 
 /* Search input in header */
 .header-toolbar :deep(.ant-input-affix-wrapper) {
-  background: rgba(0, 21, 41, 0.6);
-  border-color: rgba(0, 212, 255, 0.2);
-  color: #ccd6f6;
+  background: var(--bg-input);
+  border-color: var(--border-color);
+  color: var(--text-primary);
 }
 
 .header-toolbar :deep(.ant-input) {
   background: transparent;
-  color: #ccd6f6;
+  color: var(--text-primary);
 }
 
 .header-toolbar :deep(.ant-input::placeholder) {
-  color: #5a6a8a;
+  color: var(--text-muted);
 }
 
 .header-toolbar :deep(.ant-input-search .ant-input-search-button) {
-  background: rgba(0, 212, 255, 0.15);
-  border-color: rgba(0, 212, 255, 0.3);
-  color: #00d4ff;
+  background: var(--accent-light);
+  border-color: var(--border-color);
+  color: var(--accent);
 }
 
 </style>

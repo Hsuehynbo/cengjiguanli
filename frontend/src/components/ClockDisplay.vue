@@ -37,12 +37,11 @@ onUnmounted(() => {
 }
 .time-display .date {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--text-muted);
 }
 .time-display .time {
   font-size: 20px;
   font-weight: bold;
-  color: #00d4ff;
-  text-shadow: 0 0 10px rgba(0, 212, 255, 0.3);
+  color: var(--accent);
 }
 </style>

@@ -230,7 +230,7 @@ const handleLogin = async () => {
   position: absolute;
   width: var(--size);
   height: var(--size);
-  background: radial-gradient(circle, #00d4ff, transparent);
+  background: radial-gradient(circle, #2563eb, transparent);
   border-radius: 50%;
   animation: floatUp var(--duration) linear infinite;
   animation-delay: var(--delay);
@@ -251,9 +251,9 @@ const handleLogin = async () => {
   filter: blur(80px);
   animation: orbPulse 8s ease-in-out infinite;
 }
-.glow-orb.orb1 { width: 400px; height: 400px; background: rgba(0, 100, 255, 0.12); top: -100px; left: -100px; }
-.glow-orb.orb2 { width: 300px; height: 300px; background: rgba(0, 212, 255, 0.08); bottom: -50px; right: -50px; animation-delay: 4s; }
-.glow-orb.orb3 { width: 200px; height: 200px; background: rgba(0, 255, 200, 0.06); top: 50%; left: 60%; animation-delay: 2s; }
+.glow-orb.orb1 { width: 400px; height: 400px; background: rgba(37, 99, 235, 0.12); top: -100px; left: -100px; }
+.glow-orb.orb2 { width: 300px; height: 300px; background: rgba(59, 130, 246, 0.08); bottom: -50px; right: -50px; animation-delay: 4s; }
+.glow-orb.orb3 { width: 200px; height: 200px; background: rgba(16, 185, 129, 0.06); top: 50%; left: 60%; animation-delay: 2s; }
 @keyframes orbPulse {
   0%, 100% { transform: scale(1); opacity: 0.6; }
   50% { transform: scale(1.3); opacity: 1; }
@@ -264,8 +264,8 @@ const handleLogin = async () => {
   position: absolute;
   inset: 0;
   background-image:
-    linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+    linear-gradient(rgba(37, 99, 235, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(37, 99, 235, 0.03) 1px, transparent 1px);
   background-size: 60px 60px;
   animation: gridShift 20s linear infinite;
 }
@@ -279,7 +279,7 @@ const handleLogin = async () => {
   position: absolute;
   top: 0; left: 0; right: 0;
   height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.3), transparent);
+  background: linear-gradient(90deg, transparent, rgba(37, 99, 235, 0.3), transparent);
   animation: scanDown 6s linear infinite;
   pointer-events: none;
   z-index: 5;
@@ -297,14 +297,14 @@ const handleLogin = async () => {
   background: rgba(0, 15, 35, 0.7);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(0, 212, 255, 0.15);
+  border: 1px solid rgba(37, 99, 235, 0.15);
   border-radius: 16px;
   padding: 44px 40px 36px;
   position: relative;
   z-index: 10;
   animation: cardAppear 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   box-shadow:
-    0 0 80px rgba(0, 212, 255, 0.06),
+    0 0 80px rgba(37, 99, 235, 0.06),
     0 20px 60px rgba(0, 0, 0, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.05);
 }
@@ -319,7 +319,7 @@ const handleLogin = async () => {
   position: absolute;
   top: 0; left: 40px; right: 40px;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #00d4ff, #00ffff, #00d4ff, transparent);
+  background: linear-gradient(90deg, transparent, #2563eb, #3b82f6, #2563eb, transparent);
   animation: topGlow 3s ease-in-out infinite;
 }
 @keyframes topGlow {
@@ -332,7 +332,7 @@ const handleLogin = async () => {
   position: absolute;
   width: 20px;
   height: 20px;
-  border-color: rgba(0, 212, 255, 0.4);
+  border-color: rgba(37, 99, 235, 0.4);
   border-style: solid;
   border-width: 0;
 }
@@ -346,19 +346,19 @@ const handleLogin = async () => {
 .logo-img-wrapper { text-align: center; margin-bottom: 16px; }
 .logo-img {
   height: 56px;
-  filter: brightness(1.2) drop-shadow(0 0 12px rgba(0, 212, 255, 0.3));
+  filter: brightness(1.2) drop-shadow(0 0 12px rgba(37, 99, 235, 0.3));
   animation: logoPulse 3s ease-in-out infinite;
 }
 @keyframes logoPulse {
-  0%, 100% { filter: brightness(1.2) drop-shadow(0 0 12px rgba(0, 212, 255, 0.3)); }
-  50% { filter: brightness(1.4) drop-shadow(0 0 20px rgba(0, 212, 255, 0.5)); }
+  0%, 100% { filter: brightness(1.2) drop-shadow(0 0 12px rgba(37, 99, 235, 0.3)); }
+  50% { filter: brightness(1.4) drop-shadow(0 0 20px rgba(37, 99, 235, 0.5)); }
 }
 
 .login-title {
   font-size: 22px;
   font-weight: 700;
   margin: 0 0 6px;
-  background: linear-gradient(90deg, #00d4ff, #00ffff, #00d4ff);
+  background: linear-gradient(90deg, #2563eb, #3b82f6, #2563eb);
   background-size: 200% 100%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -396,7 +396,7 @@ const handleLogin = async () => {
   top: 50%;
   transform: translateY(-50%);
   font-size: 16px;
-  color: rgba(0, 212, 255, 0.4);
+  color: rgba(37, 99, 235, 0.4);
   transition: color 0.3s;
   z-index: 1;
   pointer-events: none;
@@ -405,7 +405,7 @@ const handleLogin = async () => {
   position: absolute;
   bottom: 0; left: 10%; right: 10%;
   height: 2px;
-  background: linear-gradient(90deg, transparent, #00d4ff, transparent);
+  background: linear-gradient(90deg, transparent, #2563eb, transparent);
   transform: scaleX(0);
   transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   border-radius: 1px;
@@ -413,8 +413,8 @@ const handleLogin = async () => {
 .input-line.active { transform: scaleX(1); }
 
 :deep(.dark-input) {
-  background: rgba(0, 212, 255, 0.04) !important;
-  border: 1px solid rgba(0, 212, 255, 0.12) !important;
+  background: rgba(37, 99, 235, 0.04) !important;
+  border: 1px solid rgba(37, 99, 235, 0.12) !important;
   border-radius: 8px !important;
   height: 48px !important;
   padding-left: 42px !important;
@@ -423,9 +423,9 @@ const handleLogin = async () => {
 }
 :deep(.dark-input:focus),
 :deep(.dark-input:hover) {
-  border-color: rgba(0, 212, 255, 0.5) !important;
-  background: rgba(0, 212, 255, 0.08) !important;
-  box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.08), 0 0 20px rgba(0, 212, 255, 0.1) !important;
+  border-color: rgba(37, 99, 235, 0.5) !important;
+  background: rgba(37, 99, 235, 0.08) !important;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08), 0 0 20px rgba(37, 99, 235, 0.1) !important;
 }
 :deep(.dark-input input) {
   background: transparent !important;
@@ -448,14 +448,14 @@ const handleLogin = async () => {
   font-weight: 600 !important;
   position: relative;
   overflow: hidden;
-  background: linear-gradient(135deg, #0055aa, #0088cc, #00bbff) !important;
+  background: linear-gradient(135deg, #1d4ed8, #2563eb, #3b82f6) !important;
   background-size: 200% 200% !important;
-  box-shadow: 0 4px 20px rgba(0, 100, 200, 0.3) !important;
+  box-shadow: 0 4px 20px rgba(37, 99, 235, 0.3) !important;
   transition: all 0.4s !important;
 }
 .login-btn:hover {
   background-position: 100% 100% !important;
-  box-shadow: 0 4px 30px rgba(0, 150, 255, 0.5) !important;
+  box-shadow: 0 4px 30px rgba(59, 130, 246, 0.5) !important;
   transform: translateY(-1px);
 }
 .login-btn:active {

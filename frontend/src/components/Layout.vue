@@ -1,8 +1,12 @@
 <template>
   <div class="layout">
+    <!-- 侧边栏 -->
     <div class="sidebar" :class="{ collapsed }">
       <div class="logo">
-        <h1 v-show="!collapsed">云和县公安局层级管理</h1>
+        <div class="logo-icon-box">
+          <Icon icon="ri:shield-star-fill" width="22" height="22" />
+        </div>
+        <h1 v-show="!collapsed">层级管理系统</h1>
       </div>
 
       <div class="menu">
@@ -22,6 +26,9 @@
           <Icon icon="ri:list-check-2" class="menu-icon" width="18" height="18" />
           <span class="menu-text">组织架构列表</span>
         </div>
+
+        <div class="menu-divider" v-show="!collapsed"></div>
+
         <div class="menu-item" :class="{ active: selectedKey === '/talk' }" @click="goToRoute('/talk')" :title="collapsed ? '谈话记录' : ''">
           <Icon icon="ri:chat-3-fill" class="menu-icon" width="18" height="18" />
           <span class="menu-text">谈话记录</span>
@@ -34,6 +41,9 @@
           <Icon icon="ri:calendar-schedule-fill" class="menu-icon" width="18" height="18" />
           <span class="menu-text">活动任务</span>
         </div>
+
+        <div class="menu-divider" v-show="!collapsed"></div>
+
         <div class="menu-item" :class="{ active: selectedKey === '/profile' }" @click="goToRoute('/profile')" :title="collapsed ? '个人信息' : ''">
           <Icon icon="ri:user-3-fill" class="menu-icon" width="18" height="18" />
           <span class="menu-text">个人信息</span>
@@ -43,39 +53,45 @@
           <span class="menu-text">人事调动与管控</span>
         </div>
       </div>
-      <div class="sidebar-toggle" @click="collapsed = !collapsed">
-        <Icon icon="ri:menu-fold-fill" v-if="!collapsed" width="16" height="16" />
-        <Icon icon="ri:menu-unfold-fill" v-else width="16" height="16" />
-        <span v-show="!collapsed" class="toggle-text">收起菜单</span>
-      </div>
-      <div class="logout">
-        <a-button type="primary" danger ghost block @click="handleLogout" :title="collapsed ? '退出登录' : ''">
+
+      <div class="sidebar-footer">
+        <div class="sidebar-toggle" @click="collapsed = !collapsed" :title="collapsed ? '展开菜单' : '收起菜单'">
+          <Icon :icon="collapsed ? 'ri:menu-unfold-fill' : 'ri:menu-fold-fill'" width="16" height="16" />
+          <span v-show="!collapsed" class="toggle-text">收起</span>
+        </div>
+        <div class="logout-btn" @click="handleLogout" :title="collapsed ? '退出登录' : ''">
           <Icon icon="ri:logout-box-r-fill" width="16" height="16" />
-          <span v-show="!collapsed" style="margin-left: 6px">退出登录</span>
-        </a-button>
+          <span v-show="!collapsed">退出登录</span>
+        </div>
       </div>
     </div>
+
+    <!-- 主内容区 -->
     <div class="content">
       <div class="header">
         <div class="header-left">
-          <Icon icon="ri:menu-fold-fill" v-if="!collapsed" class="collapse-btn" @click="collapsed = true" width="18" height="18" />
-          <Icon icon="ri:menu-unfold-fill" v-else class="collapse-btn" @click="collapsed = false" width="18" height="18" />
           <h2>{{ pageTitle }}</h2>
         </div>
         <div class="header-right">
           <a-input-search
             v-model:value="globalSearchKey"
             placeholder="搜索人员..."
-            style="width: 260px; margin-right: 16px"
+            style="width: 220px"
             allow-clear
             @search="handleGlobalSearch"
             @pressEnter="handleGlobalSearch"
           />
+          <div class="header-divider"></div>
+          <!-- 主题切换 -->
+          <div class="theme-toggle" @click="toggleTheme" :title="isDark ? '切换浅色模式' : '切换深色模式'">
+            <Icon :icon="isDark ? 'ri:sun-fill' : 'ri:moon-fill'" width="18" height="18" />
+          </div>
+          <!-- 通知 -->
           <a-popover placement="bottomRight" trigger="click" v-model:open="notifVisible">
             <template #content>
               <div class="notif-panel">
                 <div class="notif-header">
-                  <span>消息通知</span>
+                  <span style="font-weight: 600">消息通知</span>
                   <a-button type="link" size="small" @click="handleMarkAllRead">全部已读</a-button>
                 </div>
                 <div class="notif-list">
@@ -89,11 +105,20 @@
               </div>
             </template>
             <a-badge :count="unreadCount" :offset="[-2, 2]">
-              <Icon icon="ri:notification-3-fill" class="notif-bell" width="20" height="20" />
+              <div class="notif-bell">
+                <Icon icon="ri:notification-3-fill" width="18" height="18" />
+              </div>
             </a-badge>
           </a-popover>
+          <div class="header-divider"></div>
+          <!-- 用户信息 -->
+          <div class="user-info">
+            <div class="user-avatar">{{ user?.name?.charAt(0) || 'U' }}</div>
+            <span class="user-name">{{ user?.name || '用户' }}</span>
+          </div>
         </div>
       </div>
+
       <div class="main">
         <router-view :key="$route.fullPath" />
       </div>
@@ -107,7 +132,7 @@
       width="400"
     >
       <a-spin :spinning="searchLoading">
-        <div v-if="searchResults.length === 0 && !searchLoading" style="text-align: center; color: #999; padding: 40px 0">
+        <div v-if="searchResults.length === 0 && !searchLoading" style="text-align: center; color: var(--text-muted); padding: 40px 0">
           {{ globalSearchKey ? '未找到匹配结果' : '请输入搜索关键词' }}
         </div>
         <div v-for="item in searchResults" :key="item.id" class="search-result-item" @click="goToSearchResult(item)">
@@ -120,10 +145,10 @@
 </template>
 
 <script setup>
-import { ref, watch, onMounted, onUnmounted, computed } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { Icon } from '@iconify/vue'
-import { getCurrentUser, clearAuth, hasPermission } from '../utils/auth'
+import { getCurrentUser, clearAuth } from '../utils/auth'
 import { isBureauLeader as isBureauLeaderFn, isGlobalAdmin as isGlobalAdminFn, isAdmin as isAdminFn, isUnitHead as isUnitHeadFn, isDepartmentHead as isDepartmentHeadFn, canViewGlobalDashboard as canViewGlobalDashboardFn, canManagePersonnel as canManagePersonnelFn, hasSubordinates as hasSubordinatesFn, canViewActivityTasks as canViewActivityTasksFn } from '../utils/constants'
 import axios from '../utils/axios'
 
@@ -137,27 +162,41 @@ watch(collapsed, (val) => {
   localStorage.setItem('sidebar_collapsed', val)
 })
 
+// ========== 主题 ==========
+const isDark = ref(document.documentElement.getAttribute('data-theme') === 'dark')
+
+const toggleTheme = () => {
+  isDark.value = !isDark.value
+  const mode = isDark.value ? 'dark' : 'light'
+  document.documentElement.setAttribute('data-theme', mode)
+  localStorage.setItem('theme-mode', mode)
+}
+
+// 监听主题变化
+const themeObserver = new MutationObserver(() => {
+  isDark.value = document.documentElement.getAttribute('data-theme') === 'dark'
+})
+themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+
+onUnmounted(() => themeObserver.disconnect())
+
+// ========== 用户权限 ==========
 const user = ref(getCurrentUser())
 const isBureauLeader = computed(() => isBureauLeaderFn(user.value))
-
 const isAdmin = computed(() => isAdminFn(user.value))
-
 const isGlobalAdmin = computed(() => isGlobalAdminFn(user.value))
-
 const isUnitHead = computed(() => isUnitHeadFn(user.value))
 const isDepartmentHead = computed(() => isDepartmentHeadFn(user.value))
 const isAdminUnit = computed(() => user.value?.role === 'ADMIN_UNIT')
-
 const canViewGlobalDashboard = computed(() => canViewGlobalDashboardFn(user.value))
 const canViewUnitDashboard = computed(() => isDepartmentHead.value && !canViewGlobalDashboard.value)
 const canManagePersonnel = computed(() => canManagePersonnelFn(user.value))
 const hasSubordinates = computed(() => hasSubordinatesFn(user.value))
 const canViewActivityTasks = computed(() => canViewActivityTasksFn(user.value))
 
-const isOrgStatsActive = computed(() => {
-  return route.path.startsWith('/organization-stats')
-})
+const isOrgStatsActive = computed(() => route.path.startsWith('/organization-stats'))
 
+// ========== 通知 ==========
 const notifications = ref([])
 const unreadCount = ref(0)
 const notifVisible = ref(false)
@@ -170,9 +209,7 @@ const fetchNotifications = async () => {
     ])
     unreadCount.value = countRes.count || 0
     notifications.value = listRes || []
-  } catch (e) {
-    // ignore
-  }
+  } catch (e) { /* ignore */ }
 }
 
 const handleReadNotif = async (n) => {
@@ -181,9 +218,7 @@ const handleReadNotif = async (n) => {
       await axios.put(`/api/notifications/${n.id}/read`)
       n.isRead = true
       unreadCount.value = Math.max(0, unreadCount.value - 1)
-    } catch (e) {
-      // ignore
-    }
+    } catch (e) { /* ignore */ }
   }
   if (n.relatedId) {
     notifVisible.value = false
@@ -196,12 +231,10 @@ const handleMarkAllRead = async () => {
     await axios.put('/api/notifications/read-all')
     notifications.value.forEach(n => n.isRead = true)
     unreadCount.value = 0
-  } catch (e) {
-    // ignore
-  }
+  } catch (e) { /* ignore */ }
 }
 
-// 全局搜索
+// ========== 搜索 ==========
 const globalSearchKey = ref('')
 const searchResults = ref([])
 const searchDrawerVisible = ref(false)
@@ -216,45 +249,30 @@ const handleGlobalSearch = async () => {
   try {
     const users = await axios.get('/api/organization/search', { params: { keyword } })
     searchResults.value = users.slice(0, 20).map(u => ({
-      type: 'user',
-      id: u.jobNo,
-      title: u.name,
+      type: 'user', id: u.jobNo, title: u.name,
       desc: `${u.deptName || ''} · ${u.position || ''} · ${u.jobNo}`,
       jobNo: u.jobNo
     }))
-  } catch (e) {
-    // ignore
-  } finally {
-    searchLoading.value = false
-  }
+  } catch (e) { /* ignore */ }
+  finally { searchLoading.value = false }
 }
 
 const goToSearchResult = (item) => {
   searchDrawerVisible.value = false
-  if (item.type === 'user') {
-    router.push(`/user-detail?jobNo=${item.jobNo}`)
-  }
+  if (item.type === 'user') router.push(`/user-detail?jobNo=${item.jobNo}`)
 }
 
+// ========== 导航 ==========
 const goToRoute = (path) => {
-  if (route.path === path) {
-    return
-  }
-  router.push(path).catch(err => {
-  })
+  if (route.path !== path) router.push(path).catch(() => {})
 }
 
 const goToUnitDashboard = () => {
   const u = user.value
   const deptId = u.department?.id
   const deptName = u.department?.deptName || ''
-  if (deptId) {
-    const path = `/organization-stats/${deptId}?name=${encodeURIComponent(deptName)}`
-    if (route.path.startsWith('/organization-stats')) {
-      return
-    }
-    router.push(path).catch(err => {
-      })
+  if (deptId && !route.path.startsWith('/organization-stats')) {
+    router.push(`/organization-stats/${deptId}?name=${encodeURIComponent(deptName)}`).catch(() => {})
   }
 }
 
@@ -269,26 +287,16 @@ const updatePageInfo = () => {
   pageTitle.value = route.meta.title || '组织架构'
 }
 
-watch(
-  () => route.path,
-  () => {
-    updatePageInfo()
-  }
-)
+watch(() => route.path, updatePageInfo)
 
 let notifTimer = null
-
 onMounted(() => {
   updatePageInfo()
   fetchNotifications()
   notifTimer = setInterval(fetchNotifications, 60000)
 })
-
 onUnmounted(() => {
-  if (notifTimer) {
-    clearInterval(notifTimer)
-    notifTimer = null
-  }
+  if (notifTimer) clearInterval(notifTimer)
 })
 </script>
 
@@ -296,203 +304,192 @@ onUnmounted(() => {
 .layout {
   display: flex;
   min-height: 100vh;
-  background: linear-gradient(135deg, #001529 0%, #0a1628 50%, #001529 100%);
+  background: var(--bg-page);
   width: 100%;
 }
 
+/* ========== 侧边栏 ========== */
 .sidebar {
-  width: 250px;
-  flex: 0 0 250px;
-  background: rgba(0, 21, 41, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  color: #fff;
+  width: var(--sidebar-width);
+  flex: 0 0 var(--sidebar-width);
+  background: var(--bg-sidebar);
+  border-right: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
-  transition: width 0.3s, flex 0.3s;
+  transition: width 0.3s ease, flex 0.3s ease;
   overflow: hidden;
   position: relative;
   z-index: 100;
 }
-
 .sidebar.collapsed {
-  width: 60px;
-  flex: 0 0 60px;
+  width: var(--sidebar-collapsed);
+  flex: 0 0 var(--sidebar-collapsed);
 }
 
 .logo {
-  padding: 24px 20px;
-  border-bottom: 1px solid rgba(0, 212, 255, 0.08);
-  white-space: nowrap;
-  position: relative;
+  padding: 20px 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid var(--border-light);
+  min-height: 64px;
 }
-
-.logo::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 20px;
-  right: 20px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.2), transparent);
+.logo-icon-box {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
-
 .logo h1 {
-  font-size: 16px;
+  font-size: 15px;
   margin: 0;
-  font-weight: 600;
-  background: linear-gradient(90deg, #00d4ff, #00ffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.logo-icon {
-  font-size: 16px;
   font-weight: 700;
-  background: linear-gradient(90deg, #00d4ff, #00ffff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  display: none;
+  color: var(--text-title);
+  white-space: nowrap;
 }
-
-.sidebar.collapsed .logo-icon {
-  display: inline;
+.sidebar.collapsed .logo {
+  justify-content: center;
+  padding: 20px 0;
 }
-
 .sidebar.collapsed .logo h1 {
   display: none;
 }
 
 .menu {
   flex: 1;
-  padding: 16px 0;
+  padding: 12px 8px;
   overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.menu-divider {
+  height: 1px;
+  background: var(--border-light);
+  margin: 8px 12px;
 }
 
 .menu-item {
   display: flex;
   align-items: center;
-  padding: 13px 20px;
-  margin: 2px 8px;
-  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 2px 0;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.2s ease;
   white-space: nowrap;
-  position: relative;
+  color: var(--text-secondary);
+  font-size: 14px;
 }
-
 .menu-item:hover {
-  background: rgba(0, 212, 255, 0.06);
+  background: var(--accent-light);
+  color: var(--accent);
 }
-
 .menu-item.active {
-  background: rgba(0, 212, 255, 0.1);
-  color: #00d4ff;
-  box-shadow: inset 3px 0 0 #00d4ff;
+  background: var(--accent-light);
+  color: var(--accent);
+  font-weight: 600;
 }
-
 .menu-item.active .menu-icon {
-  color: #00d4ff;
-  filter: drop-shadow(0 0 4px rgba(0, 212, 255, 0.4));
+  color: var(--accent);
 }
 
 .menu-icon {
-  margin-right: 12px;
+  margin-right: 10px;
   flex-shrink: 0;
+  color: var(--text-muted);
 }
-
-.sidebar.collapsed .menu-icon {
-  margin-right: 0;
+.menu-item:hover .menu-icon,
+.menu-item.active .menu-icon {
+  color: var(--accent);
 }
 
 .sidebar.collapsed .menu-item {
   justify-content: center;
-  padding: 13px 0;
-  margin: 2px 6px;
+  padding: 10px 0;
 }
-
-.sidebar.collapsed .menu-item.active {
-  box-shadow: inset 3px 0 0 #00d4ff;
+.sidebar.collapsed .menu-icon {
+  margin-right: 0;
 }
-
-.menu-text {
-  display: inline;
-}
-
 .sidebar.collapsed .menu-text {
   display: none;
 }
-
-.logout {
-  padding: 20px;
-  border-top: 1px solid rgba(0, 212, 255, 0.08);
+.sidebar.collapsed .menu-divider {
+  margin: 8px 6px;
 }
 
-.sidebar.collapsed .logout {
-  padding: 20px 10px;
-}
-
-.sidebar.collapsed .logout span {
-  display: none;
+.sidebar-footer {
+  border-top: 1px solid var(--border-light);
 }
 
 .sidebar-toggle {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 12px 20px;
+  padding: 10px 14px;
   cursor: pointer;
-  border-top: 1px solid rgba(0, 212, 255, 0.08);
-  color: #8892b0;
-  transition: all 0.3s;
+  color: var(--text-muted);
+  transition: all 0.2s;
   gap: 8px;
+  font-size: 13px;
 }
-
 .sidebar-toggle:hover {
-  color: #00d4ff;
-  background: rgba(0, 212, 255, 0.08);
+  color: var(--accent);
+  background: var(--accent-light);
 }
-
 .sidebar.collapsed .sidebar-toggle {
-  padding: 12px 0;
+  padding: 10px 0;
   justify-content: center;
 }
-
 .sidebar.collapsed .toggle-text {
   display: none;
 }
 
+.logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.2s;
+  gap: 8px;
+  font-size: 13px;
+  border-top: 1px solid var(--border-light);
+}
+.logout-btn:hover {
+  color: var(--danger);
+  background: var(--danger-light);
+}
+.sidebar.collapsed .logout-btn {
+  padding: 10px 0;
+}
+.sidebar.collapsed .logout-btn span {
+  display: none;
+}
+
+/* ========== 内容区 ========== */
 .content {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
+  background: var(--bg-page);
 }
 
 .header {
-  padding: 0 28px;
-  height: 64px;
-  line-height: 64px;
-  background: rgba(0, 21, 41, 0.7);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(0, 212, 255, 0.08);
+  padding: 0 24px;
+  height: var(--header-height);
+  background: var(--bg-header);
+  border-bottom: 1px solid var(--border-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: relative;
-}
-
-.header::after {
-  content: '';
-  position: absolute;
-  bottom: -1px;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(0, 212, 255, 0.25), transparent);
+  flex-shrink: 0;
 }
 
 .header-left {
@@ -505,123 +502,75 @@ onUnmounted(() => {
   font-size: 17px;
   margin: 0;
   font-weight: 600;
-  background: linear-gradient(90deg, #ccd6f6, #e6edf8);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.collapse-btn {
-  color: #ccd6f6;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-.collapse-btn:hover {
-  color: #00d4ff;
+  color: var(--text-title);
 }
 
 .header-right {
   display: flex;
   align-items: center;
+  gap: 12px;
 }
 
-.header-right :deep(.ant-input-search) {
-  transition: all 0.3s;
+.header-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border-color);
 }
 
-.header-right :deep(.ant-input-search:focus-within) {
-  box-shadow: 0 0 16px rgba(0, 212, 255, 0.15);
-  border-radius: 6px;
+.theme-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+.theme-toggle:hover {
+  background: var(--accent-light);
+  color: var(--accent);
 }
 
 .notif-bell {
-  color: #ccd6f6;
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
-.notif-bell:hover {
-  color: #00d4ff;
-}
-
-.notif-panel {
-  width: 320px;
-  max-height: 400px;
-}
-
-.notif-header {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding-bottom: 8px;
-  border-bottom: 1px solid #f0f0f0;
-  margin-bottom: 8px;
-}
-
-.notif-list {
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.notif-empty {
-  text-align: center;
-  color: #999;
-  padding: 20px 0;
-}
-
-.notif-item {
-  padding: 8px;
+  justify-content: center;
   cursor: pointer;
-  border-radius: 4px;
-  transition: background 0.2s;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+.notif-bell:hover {
+  background: var(--accent-light);
+  color: var(--accent);
 }
 
-.notif-item:hover {
-  background: #f5f5f5;
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: default;
 }
-
-.notif-item.unread {
-  background: #e6f7ff;
-}
-
-.notif-title {
-  font-weight: 500;
-  margin-bottom: 4px;
-}
-
-.notif-content {
-  font-size: 12px;
-  color: #666;
-  margin-bottom: 4px;
-}
-
-.notif-time {
-  font-size: 11px;
-  color: #999;
-}
-
-.search-result-item {
-  padding: 12px 16px;
-  border-bottom: 1px solid #f0f0f0;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.search-result-item:hover {
-  background: #e6f7ff;
-}
-
-.search-result-title {
+.user-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-size: 14px;
-  font-weight: 500;
-  color: #333;
+  font-weight: 600;
 }
-
-.search-result-desc {
-  font-size: 12px;
-  color: #999;
-  margin-top: 4px;
+.user-name {
+  font-size: 14px;
+  color: var(--text-primary);
+  font-weight: 500;
 }
 
 .main {
@@ -629,24 +578,23 @@ onUnmounted(() => {
   min-width: 0;
   padding: 24px;
   overflow: auto;
-  background: transparent;
-  position: relative;
 }
 
-.main::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(0, 212, 255, 0.045) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0, 212, 255, 0.045) 1px, transparent 1px);
-  background-size: 60px 60px;
-  pointer-events: none;
-  z-index: 0;
-}
+/* ========== 通知面板 ========== */
+.notif-panel { width: 320px; max-height: 400px; }
+.notif-header { display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 1px solid var(--border-light); margin-bottom: 8px; }
+.notif-list { max-height: 300px; overflow-y: auto; }
+.notif-empty { text-align: center; color: var(--text-muted); padding: 20px 0; }
+.notif-item { padding: 10px 8px; cursor: pointer; border-radius: 6px; transition: background 0.2s; }
+.notif-item:hover { background: var(--bg-table-row-hover); }
+.notif-item.unread { background: var(--accent-light); }
+.notif-title { font-weight: 500; margin-bottom: 4px; font-size: 13px; color: var(--text-primary); }
+.notif-content { font-size: 12px; color: var(--text-muted); margin-bottom: 4px; }
+.notif-time { font-size: 11px; color: var(--text-muted); }
 
-.main > * {
-  position: relative;
-  z-index: 1;
-}
+/* ========== 搜索结果 ========== */
+.search-result-item { padding: 12px 16px; border-bottom: 1px solid var(--border-light); cursor: pointer; transition: background 0.2s; }
+.search-result-item:hover { background: var(--accent-light); }
+.search-result-title { font-size: 14px; font-weight: 500; color: var(--text-primary); }
+.search-result-desc { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
 </style>

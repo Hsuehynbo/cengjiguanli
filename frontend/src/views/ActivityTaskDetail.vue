@@ -165,7 +165,7 @@ onMounted(fetchDetail);
 .page-title {
   font-size: 18px;
   font-weight: bold;
-  color: #fff;
+  color: var(--text-title);
 }
 .task-info {
   margin-bottom: 24px;
@@ -179,10 +179,8 @@ onMounted(fetchDetail);
   flex: 1;
   text-align: center;
   padding: 16px;
-  background: rgba(0, 21, 41, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(0, 212, 255, 0.1);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
   border-radius: 12px;
 }
 .stat-value {
@@ -192,10 +190,10 @@ onMounted(fetchDetail);
 }
 .stat-value.success { color: #10b981; }
 .stat-value.warning { color: #f59e0b; }
-.stat-value.primary { color: #00d4ff; }
+.stat-value.primary { color: var(--accent); }
 .stat-label {
   font-size: 13px;
-  color: #8892b0;
+  color: var(--text-muted);
   margin-top: 4px;
 }
 </style>

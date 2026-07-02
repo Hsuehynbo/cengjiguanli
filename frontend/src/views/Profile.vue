@@ -37,7 +37,7 @@
             <a-col :span="8">
               <div class="stat-item">
                 <a-statistic title="累计接受谈话" :value="stats.talkCount" value-style="color: #1890ff" />
-                <message-outlined class="stat-icon" style="color: rgba(0, 212, 255, 0.15)" />
+                <message-outlined class="stat-icon" style="color: var(--accent-light)" />
               </div>
             </a-col>
             <a-col :span="8">
@@ -245,10 +245,10 @@ onMounted(fetchData);
 }
 
 .shadow-card {
-  background: rgba(0, 21, 41, 0.85);
-  border: 1px solid rgba(0, 212, 255, 0.2);
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
 }
 
 .info-card {
@@ -257,18 +257,18 @@ onMounted(fetchData);
 }
 
 .avatar-border {
-  border: 4px solid rgba(0, 212, 255, 0.3);
+  border: 4px solid var(--accent-light);
 }
 
 .user-name {
   margin-top: 16px;
   font-size: 22px;
   font-weight: 600;
-  color: #fff;
+  color: var(--text-title);
 }
 
 .user-job {
-  color: #8892b0;
+  color: var(--text-secondary);
   font-size: 14px;
   margin-bottom: 12px;
 }
@@ -285,18 +285,18 @@ onMounted(fetchData);
 /* Description labels and values */
 
 .desc-val {
-  color: #ccd6f6;
+  color: var(--text-primary);
   font-weight: 500;
 }
 
 
 .stat-item {
   position: relative;
-  background: rgba(0, 21, 41, 0.8);
+  background: var(--bg-card);
   padding: 20px;
-  border-radius: 8px;
+  border-radius: var(--radius-md);
   overflow: hidden;
-  border: 1px solid rgba(0, 212, 255, 0.2);
+  border: 1px solid var(--border-color);
 }
 
 
@@ -316,17 +316,17 @@ onMounted(fetchData);
 
 .list-title .time {
   font-weight: 600;
-  color: #ccd6f6;
+  color: var(--text-primary);
 }
 
 .list-title .location {
-  color: #8892b0;
+  color: var(--text-muted);
   font-size: 12px;
 }
 
 .list-desc {
   margin-top: 8px;
-  color: #8892b0;
+  color: var(--text-secondary);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
