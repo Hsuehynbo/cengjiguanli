@@ -43,9 +43,6 @@ public class DatabaseInitializer implements CommandLineRunner {
     @Override
     @Transactional
     public void run(String... args) {
-        // 将明文密码升级为BCrypt编码
-        upgradePasswords();
-
         // 权限初始化（独立于部门/用户初始化，可重复执行）
         initPermissions();
 

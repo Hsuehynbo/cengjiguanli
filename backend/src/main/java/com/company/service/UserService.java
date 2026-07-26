@@ -18,6 +18,12 @@ import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 @Service
 public class UserService {
@@ -29,6 +35,7 @@ public class UserService {
     private final ViolationRecordRepository violationRecordRepository;
     private final AuditLogService auditLogService;
     private final PasswordEncoder passwordEncoder;
+    private final FileUploadService fileUploadService;
 
     public UserService(UserRepository userRepository,
                        DepartmentRepository departmentRepository,
@@ -36,7 +43,8 @@ public class UserService {
                        HierarchyHistoryRepository hierarchyHistoryRepository,
                        ViolationRecordRepository violationRecordRepository,
                        AuditLogService auditLogService,
-                       PasswordEncoder passwordEncoder) {
+                       PasswordEncoder passwordEncoder,
+                       FileUploadService fileUploadService) {
         this.userRepository = userRepository;
         this.departmentRepository = departmentRepository;
         this.permissionRepository = permissionRepository;
@@ -44,6 +52,7 @@ public class UserService {
         this.violationRecordRepository = violationRecordRepository;
         this.auditLogService = auditLogService;
         this.passwordEncoder = passwordEncoder;
+        this.fileUploadService = fileUploadService;
     }
 
     public List<User> findAllUsers() {
@@ -326,12 +335,16 @@ public class UserService {
                 Row row = sheet.getRow(i);
                 if (row == null) continue;
 
-                String jobNo = getCellStringValue(row, 0);
+                // Excel列顺序：部门、姓名、职务、警号、短号、办公电话、手机、邮箱、地址
+                String deptName = getCellStringValue(row, 0);
                 String name = getCellStringValue(row, 1);
-                String deptName = getCellStringValue(row, 2);
-                String position = getCellStringValue(row, 3);
-                String phone = getCellStringValue(row, 4);
-                String superiorJobNo = getCellStringValue(row, 5);
+                String position = getCellStringValue(row, 2);
+                String jobNo = getCellStringValue(row, 3);
+                String shortNo = getCellStringValue(row, 4);
+                String officePhone = getCellStringValue(row, 5);
+                String phone = getCellStringValue(row, 6);
+                String email = getCellStringValue(row, 7);
+                String address = getCellStringValue(row, 8);
 
                 if (jobNo.isBlank() || name.isBlank()) {
                     errors.add("第" + (i + 1) + "行：警号或姓名为空，已跳过");
@@ -360,8 +373,11 @@ public class UserService {
                 user.setName(name);
                 user.setPosition(position.isBlank() ? "组员" : position);
                 user.setDepartment(dept);
-                user.setSuperiorJobNo(superiorJobNo.isBlank() ? null : superiorJobNo);
                 user.setPhone(phone.isBlank() ? null : phone);
+                user.setShortNo(shortNo.isBlank() ? null : shortNo);
+                user.setOfficePhone(officePhone.isBlank() ? null : officePhone);
+                user.setEmail(email.isBlank() ? null : email);
+                user.setAddress(address.isBlank() ? null : address);
                 user.setPassword(passwordEncoder.encode(jobNo));
                 user.setRole("USER");
                 user.setRiskLevel("NORMAL");
@@ -389,6 +405,97 @@ public class UserService {
         if (cell == null) return "";
         cell.setCellType(CellType.STRING);
         return cell.getStringCellValue().trim();
+    }
+
+    @Transactional
+    public Map<String, Object> batchImportPhotos(MultipartFile file) {
+        User operator = SecurityUtils.getCurrentUser();
+        if (operator == null) throw new IllegalArgumentException("操作人不存在");
+        if (!SecurityUtils.isAdminGlobal() && !operator.hasPermission("PERSONNEL_MANAGE")
+                && !operator.hasPermission("HIERARCHY_MANAGE")) {
+            throw new SecurityException("无权限批量导入照片");
+        }
+
+        List<String> errors = new ArrayList<>();
+        int successCount = 0;
+        int skipCount = 0;
+
+        // 上传目录
+        String uploadPath = fileUploadService.getUploadPath();
+        Path uploadDir = Paths.get(uploadPath);
+        try {
+            Files.createDirectories(uploadDir);
+        } catch (Exception e) {
+            throw new RuntimeException("创建上传目录失败");
+        }
+
+        // 预加载所有用户，按姓名索引
+        List<User> allUsers = userRepository.findAll();
+        Map<String, User> nameMap = new HashMap<>();
+        for (User u : allUsers) {
+            if (u.getName() != null && !u.getName().isBlank()) {
+                nameMap.put(u.getName(), u);
+            }
+        }
+
+        try (InputStream is = file.getInputStream(); ZipInputStream zis = new ZipInputStream(is)) {
+            ZipEntry entry;
+            while ((entry = zis.getNextEntry()) != null) {
+                if (entry.isDirectory()) continue;
+
+                String fileName = entry.getName();
+                // 去掉路径前缀，只取文件名
+                if (fileName.contains("/")) {
+                    fileName = fileName.substring(fileName.lastIndexOf("/") + 1);
+                }
+                if (fileName.contains("\\")) {
+                    fileName = fileName.substring(fileName.lastIndexOf("\\") + 1);
+                }
+
+                // 解析文件名：姓名.jpg -> 姓名
+                String name = fileName;
+                if (name.contains(".")) {
+                    name = name.substring(0, name.lastIndexOf("."));
+                }
+
+                // 只处理图片文件
+                String lowerName = fileName.toLowerCase();
+                if (!lowerName.endsWith(".jpg") && !lowerName.endsWith(".jpeg")
+                        && !lowerName.endsWith(".png") && !lowerName.endsWith(".webp")) {
+                    skipCount++;
+                    continue;
+                }
+
+                User user = nameMap.get(name);
+                if (user == null) {
+                    errors.add("未找到姓名为「" + name + "」的用户，已跳过");
+                    skipCount++;
+                    continue;
+                }
+
+                // 保存文件
+                String ext = fileName.substring(fileName.lastIndexOf("."));
+                String newFileName = user.getJobNo() + "_" + UUID.randomUUID() + ext;
+                Path targetPath = uploadDir.resolve(newFileName);
+                Files.copy(zis, targetPath, StandardCopyOption.REPLACE_EXISTING);
+
+                // 更新用户头像
+                user.setAvatar("/uploads/" + newFileName);
+                userRepository.save(user);
+                successCount++;
+            }
+        } catch (Exception e) {
+            throw new RuntimeException("读取ZIP文件失败：" + e.getMessage());
+        }
+
+        auditLogService.log("BATCH_IMPORT_PHOTOS", "USER", operator.getJobNo(),
+                "批量导入照片：成功" + successCount + "张，跳过" + skipCount + "张");
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("success", successCount);
+        result.put("skipped", skipCount);
+        result.put("errors", errors);
+        return result;
     }
 
     private void closeCurrentHierarchyRecord(User user, LocalDateTime endDate) {

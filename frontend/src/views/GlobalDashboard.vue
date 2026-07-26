@@ -17,36 +17,36 @@
 
         <div class="stat-card tech-card">
           <div class="card-header">
-            <div class="card-icon-wrap cyan"><Icon icon="ri:chat-3-fill" width="20" height="20" /></div>
+            <div class="card-icon-wrap cyan"><MessageOutlined style="font-size: 20px" /></div>
             <span class="card-label">本月谈话完成率</span>
           </div>
           <div class="card-value"><NumberCounter :value="summary.talkRate" />%</div>
           <div class="card-trend">
-            <Icon icon="ri:checkbox-circle-fill" width="14" height="14" style="color: #10b981" />
+            <CheckCircleOutlined style="font-size: 14px; color: #10b981" />
             <span>已完成</span>
           </div>
         </div>
 
         <div class="stat-card tech-card">
           <div class="card-header">
-            <div class="card-icon-wrap cyan"><Icon icon="ri:home-heart-fill" width="20" height="20" /></div>
+            <div class="card-icon-wrap cyan"><HomeOutlined style="font-size: 20px" /></div>
             <span class="card-label">本月家访数</span>
           </div>
           <div class="card-value"><NumberCounter :value="summary.homeVisitCount" /></div>
           <div class="card-trend">
-            <Icon icon="ri:target-fill" width="14" height="14" style="color: var(--accent)" />
+            <AimOutlined style="font-size: 14px; color: var(--accent)" />
             <span>本月累计</span>
           </div>
         </div>
 
         <div class="stat-card tech-card key-card clickable-card" @click="openRiskUserModal('KEY')">
           <div class="card-header">
-            <div class="card-icon-wrap red"><Icon icon="ri:error-warning-fill" width="20" height="20" /></div>
+            <div class="card-icon-wrap red"><WarningOutlined style="font-size: 20px" /></div>
             <span class="card-label">重点人员</span>
           </div>
           <div class="card-value highlight-red"><NumberCounter :value="summary.keyCount" color="#ef4444" /></div>
           <div class="card-trend">
-            <Icon icon="ri:alert-fill" width="14" height="14" style="color: #ef4444" />
+            <WarningOutlined style="font-size: 14px; color: #ef4444" />
             <span>需重点关注</span>
           </div>
           <div class="card-click-hint">点击查看详情</div>
@@ -54,12 +54,12 @@
 
         <div class="stat-card tech-card warning-card clickable-card" @click="openRiskUserModal('RISK')">
           <div class="card-header">
-            <div class="card-icon-wrap orange"><Icon icon="ri:shield-check-fill" width="20" height="20" /></div>
+            <div class="card-icon-wrap orange"><SafetyOutlined style="font-size: 20px" /></div>
             <span class="card-label">风险人员</span>
           </div>
           <div class="card-value highlight-orange"><NumberCounter :value="summary.riskCount" color="#f59e0b" /></div>
           <div class="card-trend">
-            <Icon icon="ri:alarm-warning-fill" width="14" height="14" style="color: #f59e0b" />
+            <ExclamationCircleOutlined style="font-size: 14px; color: #f59e0b" />
             <span>需加强管控</span>
           </div>
           <div class="card-click-hint">点击查看详情</div>
@@ -67,12 +67,12 @@
 
         <div class="stat-card tech-card success-card clickable-card" @click="openRiskUserModal('ATTENTION')">
           <div class="card-header">
-            <div class="card-icon-wrap green"><Icon icon="ri:eye-fill" width="20" height="20" /></div>
+            <div class="card-icon-wrap green"><EyeOutlined style="font-size: 20px" /></div>
             <span class="card-label">关注人员</span>
           </div>
           <div class="card-value highlight-green"><NumberCounter :value="summary.attentionCount" color="#10b981" /></div>
           <div class="card-trend">
-            <Icon icon="ri:eye-line" width="14" height="14" style="color: #10b981" />
+            <EyeOutlined style="font-size: 14px; color: #10b981" />
             <span>持续观察中</span>
           </div>
           <div class="card-click-hint">点击查看详情</div>
@@ -80,12 +80,12 @@
 
         <div class="stat-card tech-card clickable-card" @click="$router.push('/talk')">
           <div class="card-header">
-            <div class="card-icon-wrap cyan"><Icon icon="ri:task-fill" width="20" height="20" /></div>
+            <div class="card-icon-wrap cyan"><FileTextOutlined style="font-size: 20px" /></div>
             <span class="card-label">待办任务</span>
           </div>
           <div class="card-value"><NumberCounter :value="summary.pendingTasks" /></div>
           <div class="card-trend">
-            <Icon icon="ri:time-fill" width="14" height="14" style="color: var(--text-muted)" />
+            <ClockCircleOutlined style="font-size: 14px; color: var(--text-muted)" />
             <span>今日需处理</span>
           </div>
           <div class="card-click-hint">点击查看详情</div>
@@ -93,12 +93,12 @@
 
         <div class="stat-card tech-card activity-card clickable-card" @click="$router.push('/activity-tasks')">
           <div class="card-header">
-            <div class="card-icon-wrap purple"><Icon icon="ri:calendar-event-fill" width="20" height="20" /></div>
+            <div class="card-icon-wrap purple"><CalendarOutlined style="font-size: 20px" /></div>
             <span class="card-label">活动任务</span>
           </div>
           <div class="card-value"><NumberCounter :value="summary.activeTasks" /></div>
           <div class="card-trend">
-            <Icon icon="ri:pin-distance-fill" width="14" height="14" style="color: #7c3aed" />
+            <EnvironmentOutlined style="font-size: 14px; color: #7c3aed" />
             <span>进行中 {{ summary.activeTasks }} / 已结束 {{ summary.closedTasks }}</span>
           </div>
           <div class="card-click-hint">点击查看详情</div>
@@ -189,7 +189,20 @@ import { message } from 'ant-design-vue';
 import axios from '../utils/axios';
 import NumberCounter from '../components/NumberCounter.vue';
 import ClockDisplay from '../components/ClockDisplay.vue';
-import { Icon } from '@iconify/vue';
+import {
+  MessageOutlined,
+  CheckCircleOutlined,
+  HomeOutlined,
+  AimOutlined,
+  WarningOutlined,
+  SafetyOutlined,
+  ExclamationCircleOutlined,
+  EyeOutlined,
+  FileTextOutlined,
+  ClockCircleOutlined,
+  CalendarOutlined,
+  EnvironmentOutlined
+} from '@ant-design/icons-vue';
 import { RISK_LEVEL_MAP } from '../utils/constants';
 
 const router = useRouter();

@@ -2,7 +2,7 @@ import axios from 'axios'
 import { message } from 'ant-design-vue'
 
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL || 'https://cengjiguanli-production.up.railway.app',
+  baseURL: import.meta.env.VITE_API_BASE_URL ?? '',
   timeout: 15000
 })
 
@@ -54,7 +54,7 @@ instance.interceptors.response.use(
 
 export default instance
 
-const API_BASE = import.meta.env.VITE_API_BASE_URL || 'https://cengjiguanli-production.up.railway.app'
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? ''
 
 export function getFileUrl(path) {
   if (!path) return ''

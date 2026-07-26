@@ -149,6 +149,36 @@ const routes = [
         meta: {
           title: '活动记录详情'
         }
+      },
+      {
+        path: 'ai-center',
+        name: 'AICenter',
+        component: () => import('../views/AICenter.vue'),
+        meta: { title: 'AI预警中心' }
+      },
+      {
+        path: 'data-fusion',
+        name: 'DataFusion',
+        component: () => import('../views/DataFusion.vue'),
+        meta: { title: '数据融合中心' }
+      },
+      {
+        path: 'risk-assessment',
+        name: 'RiskAssessment',
+        component: () => import('../views/RiskAssessment.vue'),
+        meta: { title: '风险评估详情' }
+      },
+      {
+        path: 'ai-agents',
+        name: 'AIAgents',
+        component: () => import('../views/AIAgents.vue'),
+        meta: { title: '智能体应用' }
+      },
+      {
+        path: 'major-event-report',
+        name: 'MajorEventReport',
+        component: () => import('../views/MajorEventReport.vue'),
+        meta: { title: '重大事项申报' }
       }
     ]
   }

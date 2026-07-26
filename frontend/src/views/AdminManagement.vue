@@ -11,7 +11,11 @@
               <a-space>
                 <a-button @click="showImportModal">
                   <template #icon><UploadOutlined /></template>
-                  批量导入
+                  批量导入人员
+                </a-button>
+                <a-button @click="showPhotoImportModal">
+                  <template #icon><PictureOutlined /></template>
+                  批量导入照片
                 </a-button>
                 <a-button type="primary" @click="showCreateUser">
                   <template #icon><PlusOutlined /></template>
@@ -338,7 +342,7 @@
         >
           <template #description>
             <p>请按以下列顺序准备Excel文件（第1行为表头，数据从第2行开始）：</p>
-            <p><strong>警号 | 姓名 | 部门名称 | 职务 | 手机号 | 上级警号</strong></p>
+            <p><strong>部门 | 姓名 | 职务 | 警号 | 短号 | 办公电话 | 手机 | 邮箱 | 地址</strong></p>
             <p>其中警号和姓名为必填，部门名称需与系统中已有部门完全一致。</p>
             <p>默认密码为警号，用户登录后可自行修改。</p>
           </template>
@@ -383,12 +387,75 @@
         </div>
       </div>
     </a-modal>
+
+    <!-- 批量导入照片弹窗 -->
+    <a-modal
+      v-model:open="photoImportModal.visible"
+      title="批量导入照片"
+      :footer="null"
+      width="600px"
+    >
+      <div class="import-content">
+        <a-alert
+          message="照片格式说明"
+          type="info"
+          show-icon
+          style="margin-bottom: 16px"
+        >
+          <template #description>
+            <p>请将所有照片打包成 <strong>.zip</strong> 文件：</p>
+            <p>1. 照片文件名必须是 <strong>姓名.jpg</strong>（如：张三.jpg）</p>
+            <p>2. 支持格式：JPG、PNG、WebP</p>
+            <p>3. 系统会自动根据姓名匹配到对应人员</p>
+            <p>4. 文件大小限制：10MB</p>
+          </template>
+        </a-alert>
+
+        <a-upload
+          :file-list="photoImportModal.fileList"
+          :before-upload="beforePhotoImportUpload"
+          :remove="handlePhotoImportRemove"
+          accept=".zip"
+          :max-count="1"
+        >
+          <a-button>
+            <template #icon><UploadOutlined /></template>
+            选择ZIP文件
+          </a-button>
+        </a-upload>
+
+        <div v-if="photoImportModal.result" style="margin-top: 16px">
+          <a-alert
+            :type="photoImportModal.result.errors?.length ? 'warning' : 'success'"
+            show-icon
+          >
+            <template #description>
+              <p>成功导入 <strong>{{ photoImportModal.result.success }}</strong> 张照片</p>
+              <p v-if="photoImportModal.result.skipped > 0">跳过 <strong>{{ photoImportModal.result.skipped }}</strong> 个文件</p>
+              <div v-if="photoImportModal.result.errors?.length" style="margin-top: 8px">
+                <p style="color: #faad14; margin-bottom: 4px">详细信息：</p>
+                <p v-for="(err, idx) in photoImportModal.result.errors" :key="idx" style="font-size: 12px; color: #999">{{ err }}</p>
+              </div>
+            </template>
+          </a-alert>
+        </div>
+
+        <div style="margin-top: 16px; text-align: right">
+          <a-space>
+            <a-button @click="photoImportModal.visible = false">关闭</a-button>
+            <a-button type="primary" :loading="photoImportModal.uploading" :disabled="photoImportModal.fileList.length === 0" @click="handlePhotoImportSubmit">
+              开始导入
+            </a-button>
+          </a-space>
+        </div>
+      </div>
+    </a-modal>
   </div>
 </template>
 
 <script setup>
 import { onMounted, reactive, ref, watch } from 'vue';
-import { PlusOutlined, UploadOutlined } from '@ant-design/icons-vue';
+import { PlusOutlined, UploadOutlined, PictureOutlined } from '@ant-design/icons-vue';
 import axios from '../utils/axios';
 import { message } from 'ant-design-vue';
 import dayjs from 'dayjs';
@@ -907,6 +974,54 @@ const handleImportSubmit = async () => {
     message.error(e.response?.data?.error || '导入失败');
   } finally {
     importModal.uploading = false;
+  }
+};
+
+// 批量导入照片
+const photoImportModal = reactive({
+  visible: false,
+  fileList: [],
+  uploading: false,
+  result: null
+});
+
+const showPhotoImportModal = () => {
+  photoImportModal.visible = true;
+  photoImportModal.fileList = [];
+  photoImportModal.result = null;
+};
+
+const beforePhotoImportUpload = (file) => {
+  const isZip = file.name.endsWith('.zip');
+  if (!isZip) {
+    message.error('只能上传 ZIP 文件！');
+    return false;
+  }
+  photoImportModal.fileList = [file];
+  return false;
+};
+
+const handlePhotoImportRemove = () => {
+  photoImportModal.fileList = [];
+};
+
+const handlePhotoImportSubmit = async () => {
+  if (photoImportModal.fileList.length === 0) return;
+  photoImportModal.uploading = true;
+  photoImportModal.result = null;
+  try {
+    const formData = new FormData();
+    formData.append('file', photoImportModal.fileList[0]);
+    const res = await axios.post('/api/users/batch-import-photos', formData, {
+      headers: { 'Content-Type': 'multipart/form-data' }
+    });
+    photoImportModal.result = res;
+    message.success(`导入完成：成功 ${res.success} 张照片`);
+    fetchTree();
+  } catch (e) {
+    message.error(e.response?.data?.error || '导入失败');
+  } finally {
+    photoImportModal.uploading = false;
   }
 };
 

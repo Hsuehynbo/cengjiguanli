@@ -150,4 +150,15 @@ public class UserController {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
+
+    @PostMapping("/batch-import-photos")
+    public ResponseEntity<?> batchImportPhotos(@RequestParam("file") MultipartFile file) {
+        try {
+            return ResponseEntity.ok(userService.batchImportPhotos(file));
+        } catch (SecurityException e) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(Map.of("error", e.getMessage()));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
 }

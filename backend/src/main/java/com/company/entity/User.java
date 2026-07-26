@@ -36,6 +36,18 @@ public class User {
     @Column(name = "phone")
     private String phone;
 
+    @Column(name = "short_no")
+    private String shortNo;
+
+    @Column(name = "office_phone")
+    private String officePhone;
+
+    @Column(name = "email")
+    private String email;
+
+    @Column(name = "address")
+    private String address;
+
     @Column(name = "is_key_personnel", nullable = false)
     private Boolean isKeyPersonnel = false;
 
@@ -189,6 +201,38 @@ public class User {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getShortNo() {
+        return shortNo;
+    }
+
+    public void setShortNo(String shortNo) {
+        this.shortNo = shortNo;
+    }
+
+    public String getOfficePhone() {
+        return officePhone;
+    }
+
+    public void setOfficePhone(String officePhone) {
+        this.officePhone = officePhone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     public String getPassword() {

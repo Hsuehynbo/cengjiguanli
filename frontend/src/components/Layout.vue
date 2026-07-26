@@ -4,64 +4,85 @@
     <div class="sidebar" :class="{ collapsed }">
       <div class="logo">
         <div class="logo-icon-box">
-          <Icon icon="ri:shield-star-fill" width="22" height="22" />
+          <SafetyCertificateOutlined style="font-size: 22px" />
         </div>
         <h1 v-show="!collapsed">层级管理系统</h1>
       </div>
 
       <div class="menu">
+        <div class="menu-divider" v-show="!collapsed"></div>
+        <div class="menu-group-label" v-show="!collapsed">AI 智能预警</div>
+        <div class="menu-item" :class="{ active: selectedKey === '/ai-center' }" @click="goToRoute('/ai-center')" :title="collapsed ? 'AI预警中心' : ''">
+          <AlertOutlined class="menu-icon" style="font-size: 18px" />
+          <span class="menu-text">AI预警中心</span>
+        </div>
+        <div class="menu-item" :class="{ active: selectedKey === '/data-fusion' }" @click="goToRoute('/data-fusion')" :title="collapsed ? '数据融合中心' : ''">
+          <FundOutlined class="menu-icon" style="font-size: 18px" />
+          <span class="menu-text">数据融合中心</span>
+        </div>
+        <div class="menu-item" :class="{ active: selectedKey === '/risk-assessment' }" @click="goToRoute('/risk-assessment')" :title="collapsed ? '风险评估详情' : ''">
+          <DashboardOutlined class="menu-icon" style="font-size: 18px" />
+          <span class="menu-text">风险评估详情</span>
+        </div>
+        <div class="menu-item" :class="{ active: selectedKey === '/ai-agents' }" @click="goToRoute('/ai-agents')" :title="collapsed ? '智能体应用' : ''">
+          <RobotOutlined class="menu-icon" style="font-size: 18px" />
+          <span class="menu-text">智能体应用</span>
+        </div>
+
+        <div class="menu-divider" v-show="!collapsed"></div>
         <div v-if="canViewUnitDashboard" class="menu-item" :class="{ active: isOrgStatsActive }" @click="goToUnitDashboard" :title="collapsed ? '部门详情' : ''">
-          <Icon icon="ri:bar-chart-2-fill" class="menu-icon" width="18" height="18" />
+          <BarChartOutlined class="menu-icon" style="font-size: 18px" />
           <span class="menu-text">部门详情</span>
         </div>
         <div v-if="canViewGlobalDashboard" class="menu-item" :class="{ active: selectedKey === '/global-dashboard' }" @click="goToRoute('/global-dashboard')" :title="collapsed ? '全局总览' : ''">
-          <Icon icon="ri:dashboard-3-fill" class="menu-icon" width="18" height="18" />
+          <DashboardOutlined class="menu-icon" style="font-size: 18px" />
           <span class="menu-text">全局总览</span>
         </div>
         <div v-if="hasSubordinates" class="menu-item" :class="{ active: selectedKey === '/' }" @click="goToRoute('/')" :title="collapsed ? '组织架构图' : ''">
-          <Icon icon="ri:group-fill" class="menu-icon" width="18" height="18" />
+          <TeamOutlined class="menu-icon" style="font-size: 18px" />
           <span class="menu-text">组织架构图</span>
         </div>
         <div v-if="hasSubordinates" class="menu-item" :class="{ active: selectedKey === '/organization-list' }" @click="goToRoute('/organization-list')" :title="collapsed ? '组织架构列表' : ''">
-          <Icon icon="ri:list-check-2" class="menu-icon" width="18" height="18" />
+          <UnorderedListOutlined class="menu-icon" style="font-size: 18px" />
           <span class="menu-text">组织架构列表</span>
         </div>
 
         <div class="menu-divider" v-show="!collapsed"></div>
 
         <div class="menu-item" :class="{ active: selectedKey === '/talk' }" @click="goToRoute('/talk')" :title="collapsed ? '谈话记录' : ''">
-          <Icon icon="ri:chat-3-fill" class="menu-icon" width="18" height="18" />
+          <MessageOutlined class="menu-icon" style="font-size: 18px" />
           <span class="menu-text">谈话记录</span>
         </div>
         <div class="menu-item" :class="{ active: selectedKey === '/home-visit-list' }" @click="goToRoute('/home-visit-list')" :title="collapsed ? '家访记录' : ''">
-          <Icon icon="ri:home-heart-fill" class="menu-icon" width="18" height="18" />
+          <HomeOutlined class="menu-icon" style="font-size: 18px" />
           <span class="menu-text">家访记录</span>
         </div>
         <div v-if="canViewActivityTasks" class="menu-item" :class="{ active: selectedKey === '/activity-tasks' }" @click="goToRoute('/activity-tasks')" :title="collapsed ? '活动任务' : ''">
-          <Icon icon="ri:calendar-schedule-fill" class="menu-icon" width="18" height="18" />
+          <CalendarOutlined class="menu-icon" style="font-size: 18px" />
           <span class="menu-text">活动任务</span>
         </div>
 
         <div class="menu-divider" v-show="!collapsed"></div>
 
         <div class="menu-item" :class="{ active: selectedKey === '/profile' }" @click="goToRoute('/profile')" :title="collapsed ? '个人信息' : ''">
-          <Icon icon="ri:user-3-fill" class="menu-icon" width="18" height="18" />
+          <UserOutlined class="menu-icon" style="font-size: 18px" />
           <span class="menu-text">个人信息</span>
         </div>
+        <div class="menu-item" :class="{ active: selectedKey === '/major-event-report' }" @click="goToRoute('/major-event-report')" :title="collapsed ? '重大事项申报' : ''">
+          <FileTextOutlined class="menu-icon" style="font-size: 18px" />
+          <span class="menu-text">重大事项申报</span>
+        </div>
         <div v-if="canManagePersonnel" class="menu-item" :class="{ active: selectedKey === '/admin-mgmt' }" @click="goToRoute('/admin-mgmt')" :title="collapsed ? '人事调动与管控' : ''">
-          <Icon icon="ri:settings-3-fill" class="menu-icon" width="18" height="18" />
+          <SettingOutlined class="menu-icon" style="font-size: 18px" />
           <span class="menu-text">人事调动与管控</span>
         </div>
       </div>
 
       <div class="sidebar-footer">
         <div class="sidebar-toggle" @click="collapsed = !collapsed" :title="collapsed ? '展开菜单' : '收起菜单'">
-          <Icon :icon="collapsed ? 'ri:menu-unfold-fill' : 'ri:menu-fold-fill'" width="16" height="16" />
+          <MenuUnfoldOutlined v-if="collapsed" style="font-size: 16px" />
+          <MenuFoldOutlined v-else style="font-size: 16px" />
           <span v-show="!collapsed" class="toggle-text">收起</span>
-        </div>
-        <div class="logout-btn" @click="handleLogout" :title="collapsed ? '退出登录' : ''">
-          <Icon icon="ri:logout-box-r-fill" width="16" height="16" />
-          <span v-show="!collapsed">退出登录</span>
         </div>
       </div>
     </div>
@@ -84,7 +105,7 @@
           <div class="header-divider"></div>
           <!-- 主题切换 -->
           <div class="theme-toggle" @click="toggleTheme" :title="isDark ? '切换浅色模式' : '切换深色模式'">
-            <Icon :icon="isDark ? 'ri:sun-fill' : 'ri:moon-fill'" width="18" height="18" />
+            <BulbOutlined style="font-size: 18px" />
           </div>
           <!-- 通知 -->
           <a-popover placement="bottomRight" trigger="click" v-model:open="notifVisible">
@@ -106,7 +127,7 @@
             </template>
             <a-badge :count="unreadCount" :offset="[-2, 2]">
               <div class="notif-bell">
-                <Icon icon="ri:notification-3-fill" width="18" height="18" />
+                <BellOutlined style="font-size: 18px" />
               </div>
             </a-badge>
           </a-popover>
@@ -115,6 +136,11 @@
           <div class="user-info">
             <div class="user-avatar">{{ user?.name?.charAt(0) || 'U' }}</div>
             <span class="user-name">{{ user?.name || '用户' }}</span>
+          </div>
+          <div class="header-divider"></div>
+          <!-- 退出登录 -->
+          <div class="header-logout" @click="handleLogout" title="退出登录">
+            <LogoutOutlined style="font-size: 16px" />
           </div>
         </div>
       </div>
@@ -147,7 +173,28 @@
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
-import { Icon } from '@iconify/vue'
+import {
+  SafetyCertificateOutlined,
+  BarChartOutlined,
+  DashboardOutlined,
+  TeamOutlined,
+  UnorderedListOutlined,
+  MessageOutlined,
+  HomeOutlined,
+  CalendarOutlined,
+  UserOutlined,
+  SettingOutlined,
+  MenuUnfoldOutlined,
+  MenuFoldOutlined,
+  LogoutOutlined,
+  BellOutlined,
+  BulbOutlined,
+  RobotOutlined,
+  AlertOutlined,
+  ApiOutlined,
+  FundOutlined,
+  FileTextOutlined
+} from '@ant-design/icons-vue'
 import { getCurrentUser, clearAuth } from '../utils/auth'
 import { isBureauLeader as isBureauLeaderFn, isGlobalAdmin as isGlobalAdminFn, isAdmin as isAdminFn, isUnitHead as isUnitHeadFn, isDepartmentHead as isDepartmentHeadFn, canViewGlobalDashboard as canViewGlobalDashboardFn, canManagePersonnel as canManagePersonnelFn, hasSubordinates as hasSubordinatesFn, canViewActivityTasks as canViewActivityTasksFn } from '../utils/constants'
 import axios from '../utils/axios'
@@ -372,6 +419,14 @@ onUnmounted(() => {
   background: var(--border-light);
   margin: 8px 12px;
 }
+.menu-group-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  padding: 4px 14px 2px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
 
 .menu-item {
   display: flex;
@@ -446,29 +501,6 @@ onUnmounted(() => {
   justify-content: center;
 }
 .sidebar.collapsed .toggle-text {
-  display: none;
-}
-
-.logout-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 10px 14px;
-  cursor: pointer;
-  color: var(--text-muted);
-  transition: all 0.2s;
-  gap: 8px;
-  font-size: 13px;
-  border-top: 1px solid var(--border-light);
-}
-.logout-btn:hover {
-  color: var(--danger);
-  background: var(--danger-light);
-}
-.sidebar.collapsed .logout-btn {
-  padding: 10px 0;
-}
-.sidebar.collapsed .logout-btn span {
   display: none;
 }
 
@@ -571,6 +603,22 @@ onUnmounted(() => {
   font-size: 14px;
   color: var(--text-primary);
   font-weight: 500;
+}
+
+.header-logout {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-secondary);
+  transition: all 0.2s;
+}
+.header-logout:hover {
+  background: var(--danger-light);
+  color: var(--danger);
 }
 
 .main {
